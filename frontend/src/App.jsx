@@ -27,6 +27,9 @@ function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [playingVideos, setPlayingVideos] = useState({});
   const [checkoutState, setCheckoutState] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const handleCheckout = () => {
       if (cart.length === 0) return;
@@ -183,15 +186,21 @@ Your development environment is now ready. Good luck, Operator.
 
       {/* Navbar */}
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-          <div className="logo" onClick={() => setCurrentPage('home')}>GAMING<span style={{color: 'var(--accent-pink)'}}>X</span></div>
-          <ul className="nav-links">
-              <li><button className={`nav-btn ${currentPage === 'home' ? 'active' : ''}`} onClick={() => setCurrentPage('home')}>Home</button></li>
-              <li><button className={`nav-btn ${currentPage === 'buy' ? 'active' : ''}`} onClick={() => setCurrentPage('buy')}>Buy</button></li>
-              <li><button className={`nav-btn ${currentPage === 'learn' ? 'active' : ''}`} onClick={() => setCurrentPage('learn')}>Learn</button></li>
-              <li><button className={`nav-btn ${currentPage === 'build' ? 'active' : ''}`} onClick={() => setCurrentPage('build')}>Build</button></li>
-              <li><button className={`nav-btn ${currentPage === 'connect' ? 'active' : ''}`} onClick={() => setCurrentPage('connect')}>Connect</button></li>
+          <div className="logo" onClick={() => { setCurrentPage('home'); setIsMenuOpen(false); }}>GAMING<span style={{color: 'var(--accent-pink)'}}>X</span></div>
+          
+          <button className="mobile-menu-btn" onClick={toggleMenu}>
+              {isMenuOpen ? '✕' : '☰'}
+          </button>
+
+          <ul className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
+              <li><button className={`nav-btn ${currentPage === 'home' ? 'active' : ''}`} onClick={() => { setCurrentPage('home'); setIsMenuOpen(false); }}>Home</button></li>
+              <li><button className={`nav-btn ${currentPage === 'buy' ? 'active' : ''}`} onClick={() => { setCurrentPage('buy'); setIsMenuOpen(false); }}>Buy</button></li>
+              <li><button className={`nav-btn ${currentPage === 'learn' ? 'active' : ''}`} onClick={() => { setCurrentPage('learn'); setIsMenuOpen(false); }}>Learn</button></li>
+              <li><button className={`nav-btn ${currentPage === 'build' ? 'active' : ''}`} onClick={() => { setCurrentPage('build'); setIsMenuOpen(false); }}>Build</button></li>
+              <li><button className={`nav-btn ${currentPage === 'connect' ? 'active' : ''}`} onClick={() => { setCurrentPage('connect'); setIsMenuOpen(false); }}>Connect</button></li>
           </ul>
-          <div className="cart-status" onClick={() => setIsCartOpen(true)} style={{fontSize: '1.2rem', fontWeight: 900, color: 'var(--accent-cyan)', cursor: 'pointer'}}>
+          
+          <div className="cart-status" onClick={() => { setIsCartOpen(true); setIsMenuOpen(false); }} style={{fontSize: '1.2rem', fontWeight: 900, color: 'var(--accent-cyan)', cursor: 'pointer'}}>
               [ STORAGE: {cart.length} ]
           </div>
       </nav>
@@ -254,7 +263,7 @@ Your development environment is now ready. Good luck, Operator.
       {/* Checkout Success Modal */}
       {checkoutState === 'success' && (
           <div className="modal-overlay" onClick={closeCheckout}>
-              <div className="pillar-modal glass fade-in text-center" onClick={e => e.stopPropagation()} style={{maxWidth: '600px'}}>
+              <div className="pillar-modal glass fade-in text-center" onClick={e => e.stopPropagation()} style={{maxWidth: '600px', width: '90%'}}>
                   <h2 style={{fontSize: '3rem', color: 'var(--accent-cyan)', marginBottom: '1rem'}}>TRANSACTION COMPLETE</h2>
                   <p style={{fontSize: '1.2rem', color: 'var(--text-main)', marginBottom: '2rem'}}>
                       Neural link established. Your hardware is being prepared for immediate deployment to your sector.
@@ -266,7 +275,7 @@ Your development environment is now ready. Good luck, Operator.
 
       {selectedModule && (
           <div className="modal-overlay" onClick={() => setSelectedModule(null)}>
-              <div className="pillar-modal glass fade-in" onClick={e => e.stopPropagation()} style={{maxWidth: '1000px'}}>
+              <div className="pillar-modal glass fade-in" onClick={e => e.stopPropagation()} style={{maxWidth: '1000px', width: '90%'}}>
                   <button className="close-modal" onClick={() => setSelectedModule(null)}>×</button>
                   <h2 style={{fontSize: '3rem', color: 'var(--accent-cyan)', marginBottom: '2rem'}}>{selectedModule.title}</h2>
                   <div className="modal-content-grid">
