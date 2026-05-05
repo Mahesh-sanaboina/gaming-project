@@ -2,290 +2,457 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './index.css';
 
+const fallbackProducts = [
+    { _id: '1', name: 'Quantum Console X', price: 499, description: 'Next-gen performance in a sleek pearl-white design. Optimized for 4K 120Hz gaming.', category: 'console', imageUrl: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=1000' },
+    { _id: '2', name: 'Aurora Rig Ultra', price: 2499, description: 'Premium water-cooled PC with RTX 5090 and elegant white aesthetics.', category: 'pc', imageUrl: 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?auto=format&fit=crop&q=80&w=1000' },
+    { _id: '3', name: 'Zenith Pro Headset', price: 299, description: 'Audiophile-grade wireless headset with pristine sound and cloud-soft comfort.', category: 'accessory', imageUrl: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&q=80&w=1000' },
+    { _id: '4', name: 'Cyber-Mechanical Keyboard', price: 189, description: 'Ultra-responsive optical switches with per-key RGB and titanium frame.', category: 'accessory', imageUrl: 'https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&q=80&w=1000' },
+    { _id: '5', name: 'Nexus Gaming Monitor', price: 899, description: '32-inch 4K OLED display with 240Hz refresh rate and ultra-low response time.', category: 'accessory', imageUrl: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&q=80&w=1000' },
+    { _id: '6', name: 'Titan Gaming Chair', price: 549, description: 'Ergonomic carbon-fiber design with magnetic memory foam lumbar support.', category: 'accessory', imageUrl: '/cyberpunk_gaming_chair.png' }
+];
+
 function App() {
-    const [products, setProducts] = useState([]);
-    const [email, setEmail] = useState('');
-    const [subscribeMessage, setSubscribeMessage] = useState('');
-    const [scrolled, setScrolled] = useState(false);
+  const [products, setProducts] = useState(fallbackProducts);
+  const [cart, setCart] = useState([]);
+  const [scrolled, setScrolled] = useState(false);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [currentPage, setCurrentPage] = useState('home');
+  const [selectedModule, setSelectedModule] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [playingVideos, setPlayingVideos] = useState({});
 
-    // Fetch products from backend
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const res = await axios.get('https://cf3d442c45582833-124-123-145-113.serveousercontent.com/api/products');
-                setProducts(res.data);
-            } catch (err) {
-                console.error('Error fetching products:', err);
-            }
-        };
-        fetchProducts();
-    }, []);
+  const playVideo = (key) => {
+      setPlayingVideos(prev => ({ ...prev, [key]: true }));
+  };
 
-    // Handle scroll effect
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+  const learnModules = {
+      aim: {
+          title: "NEURAL AIM PROTOCOL",
+          content: "Decoding human reaction limits. Learn to synchronize your synaptic responses with 8000Hz polling rates for sub-millisecond precision in FPS titles.",
+          videoUrl: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=800",
+          youtubeUrl: "https://www.youtube.com/embed/e_E9W2vsRbQ"
+      },
+      movement: {
+          title: "GHOST MOVEMENT MECHANICS",
+          content: "Master advanced strafing, slide-canceling, and momentum shifts to make your hitbox virtually untrackable in competitive play.",
+          videoUrl: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=800",
+          youtubeUrl: "https://www.youtube.com/embed/MmB9b5njVbA"
+      },
+      strategy: {
+          title: "PRO GAME SENSE & MACRO",
+          content: "Read the battlefield like a grandmaster. Learn predictive positioning, map control, and how to force enemy errors.",
+          videoUrl: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&q=80&w=800",
+          youtubeUrl: "https://www.youtube.com/embed/8X2kIfS6fb8"
+      },
+      optimization: {
+          title: "MAX FPS TUNING GUIDE",
+          content: "Bypassing standard OS schedulers. A deep dive into IRQ priority management and core parking to eliminate input lag completely.",
+          videoUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800",
+          youtubeUrl: "https://www.youtube.com/embed/aqz-KE-bpKQ"
+      }
+  };
 
-    // Handle intersection observer for fade-in animations
-    useEffect(() => {
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.15
-        };
 
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
 
-        const elementsToAnimate = document.querySelectorAll('.fade-in');
-        elementsToAnimate.forEach(el => observer.observe(el));
+  const fetchProducts = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/api/products');
+      if (res.data && res.data.length > 0) {
+          setProducts(res.data);
+      } else {
+          setProducts(fallbackProducts);
+      }
+    } catch (err) {
+      console.error('Error fetching products, using fallback:', err);
+      setProducts(fallbackProducts);
+    }
+  };
 
-        return () => observer.disconnect();
-    }, [products]); // Re-run when products load so they get observed
-
-    const handleSubscribe = async (e) => {
-        e.preventDefault();
-        try {
-            const res = await axios.post('https://e19e530135377559-124-123-145-113.serveousercontent.com/api/subscribe', { email });
-            setSubscribeMessage(res.data.message);
-            setEmail('');
-        } catch (err) {
-            setSubscribeMessage(err.response?.data?.message || 'Subscription failed');
-        }
+  useEffect(() => {
+    fetchProducts();
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress((window.scrollY / totalHeight) * 100);
     };
+    const handleMouseMove = (e) => setCursorPos({ x: e.clientX, y: e.clientY });
+    
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
 
-    const consolesAndPCs = products.filter(p => p.category === 'console' || p.category === 'pc');
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    return () => observer.disconnect();
+  }, [products, currentPage]);
 
-    return (
-        <div>
-            {/* Navbar */}
-            <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-                <div className="logo">
-                    <span className="neon-text">GAMING</span>
-                </div>
-                <ul className="nav-links">
-                    <li><a href="#systems">Systems</a></li>
-                    <li><a href="#accessories">Accessories</a></li>
-                    <li><a href="#features">Features</a></li>
-                </ul>
-                <a href="#systems" className="btn btn-primary">Shop Now</a>
-            </nav>
+  const addToCart = (product) => {
+      setCart([...cart, product]);
+      setIsCartOpen(true);
+  };
 
-            {/* Stats Ticker */}
-            <div className="stats-ticker">
-                <div className="ticker-content">
-                    <span>🔥 50,000+ Gamers Online</span>
-                    <span>⚡ 1.2M Custom Rigs Built</span>
-                    <span>⭐ 4.9/5 Average Rating</span>
-                    <span>🚀 99.9% Performance Uptime</span>
-                    <span>🔥 50,000+ Gamers Online</span>
-                    <span>⚡ 1.2M Custom Rigs Built</span>
-                </div>
-            </div>
+  const removeFromCart = (indexToRemove) => {
+      setCart(cart.filter((_, index) => index !== indexToRemove));
+  };
 
-            {/* Hero Section */}
-            <header className="hero">
-                <div className="hero-bg">
-                    <img src="https://images.unsplash.com/photo-1578632292335-df3abbb0d586?auto=format&fit=crop&q=80&w=2000" alt="Unique anime city background" />
-                    <div className="overlay"></div>
-                </div>
-                <div className="unique-orb"></div>
-                <div className="particles">
-                    <div className="particle"></div>
-                    <div className="particle"></div>
-                    <div className="particle"></div>
-                    <div className="particle"></div>
-                    <div className="particle"></div>
-                    <div className="particle"></div>
-                </div>
-                <div className="hero-content">
-                    <h1 className="glitch" data-text="BEYOND REALITY">BEYOND REALITY</h1>
-                    <p>Elevate your gameplay with cutting-edge performance. Engineered for those who demand the absolute best.</p>
-                    <div className="hero-buttons">
-                        <a href="#systems" className="btn btn-primary glow-btn">Explore Systems</a>
-                        <a href="#features" className="btn btn-secondary">Learn More</a>
-                    </div>
-                </div>
-            </header>
+  const handleDownloadSDK = () => {
+      const element = document.createElement("a");
+      const fileContent = `=========================================
+ GAMINGX NEURAL SDK & GAME DEV GUIDE v1.0.4
+=========================================
 
-            {/* Featured Systems from Database */}
-            <section id="systems" className="section">
-                <div className="container">
-                    <h2 className="section-title fade-in">Next-Gen <span className="neon-text">Power</span></h2>
-                    <div className="grid">
-                        {consolesAndPCs.length > 0 ? (
-                            consolesAndPCs.map(product => (
-                                <div className="card glass fade-in" key={product._id}>
-                                    <div className="card-img">
-                                        <img src={product.imageUrl} alt={product.name} />
-                                    </div>
-                                    <div className="card-info">
-                                        <h3>{product.name}</h3>
-                                        <p>{product.description}</p>
-                                        <a href="#" className="btn btn-outline">View Details</a>
-                                    </div>
-                                </div>
-                            ))
-                        ) : (
-                            <p style={{ textAlign: 'center', width: '100%' }}>Loading products from database...</p>
-                        )}
-                    </div>
-                </div>
-            </section>
+Welcome to the Forge. This document contains the essential blueprints for building your first game.
 
-            {/* Accessories */}
-            <section id="accessories" className="section dark-section">
-                <div className="container">
-                    <h2 className="section-title fade-in">Premium <span className="neon-text">Gear</span></h2>
-                    <div className="accessory-banner glass fade-in">
-                        <div className="accessory-content">
-                            <h3>Tactical Advantage</h3>
-                            <p>Complete your setup with our line of audiophile-grade headsets and pro-level controllers. Precision engineered for competitive play.</p>
-                            <ul className="feature-list">
-                                <li><span>✓</span> Ultra-low latency</li>
-                                <li><span>✓</span> Premium build quality</li>
-                                <li><span>✓</span> Fully customizable RGB</li>
-                            </ul>
-                            <a href="#" className="btn btn-primary glow-btn mt-4">Shop Accessories</a>
-                        </div>
-                        <div className="accessory-img">
-                            <img src="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&q=80&w=1000" alt="Premium gaming headset and controller" />
-                        </div>
-                    </div>
-                </div>
-            </section>
+PHASE 1: CHOOSE YOUR ENGINE
+-----------------------------------------
+1. Unreal Engine 5 (UE5)
+   - Best for: AAA graphics, 3D worlds, high realism.
+   - Language: C++ and visual "Blueprints".
+   - Tip: Start with the First Person template to understand movement physics.
 
-            {/* Testimonials Section */}
-            <section className="section dark-section">
-                <div className="container">
-                    <h2 className="section-title fade-in">Gamers' <span className="neon-text">Voices</span></h2>
-                    <div className="grid">
-                        <div className="testimonial-card glass fade-in">
-                            <p>"The performance is unmatched. My custom PC runs everything at 4K without breaking a sweat."</p>
-                            <div className="user-info">
-                                <h5>Alex Thorne</h5>
-                                <span>Professional Streamer</span>
-                            </div>
-                        </div>
-                        <div className="testimonial-card glass fade-in">
-                            <p>"The white aesthetic fits my setup perfectly. It's not just a console, it's a piece of art."</p>
-                            <div className="user-info">
-                                <h5>Sarah Jenkins</h5>
-                                <span>Esports Athlete</span>
-                            </div>
-                        </div>
-                        <div className="testimonial-card glass fade-in">
-                            <p>"Best customer support I've ever experienced. They helped me pick the perfect rig for my needs."</p>
-                            <div className="user-info">
-                                <h5>Marcus Dax</h5>
-                                <span>Casual Gamer</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+2. Unity Engine
+   - Best for: Mobile games, 2D/3D indie games, VR.
+   - Language: C#.
+   - Tip: Extremely versatile, heavily supported by millions of community tutorials.
 
-            {/* Community Section */}
-            <section className="section community-section">
-                <div className="container text-center">
-                    <h2 className="section-title fade-in">Join the <span className="neon-text">Hype</span></h2>
-                    <p className="fade-in">Connect with millions of gamers across our global community channels.</p>
-                    <div className="social-grid fade-in">
-                        <div className="social-box discord">
-                            <h4>Discord</h4>
-                            <p>Chat with developers and pros.</p>
-                            <a href="#" className="btn btn-outline">Join Server</a>
-                        </div>
-                        <div className="social-box twitch">
-                            <h4>Twitch</h4>
-                            <p>Watch live tournaments daily.</p>
-                            <a href="#" className="btn btn-outline">Follow Us</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
+3. Godot Engine
+   - Best for: 2D masterpieces, lightweight projects, open-source lovers.
+   - Language: GDScript (similar to Python), C#, C++.
+   - Tip: Extremely fast to learn and completely free with no royalties.
 
-            {/* Features */}
-            <section id="features" className="section">
-                <div className="container">
-                    <div className="features-grid">
-                        <div className="feature-box fade-in">
-                            <div className="feature-icon">⚡</div>
-                            <h4>Hyper Speed</h4>
-                            <p>State-of-the-art SSDs and optimized architectures ensure you never wait on a loading screen again.</p>
-                        </div>
-                        <div className="feature-box fade-in">
-                            <div className="feature-icon">👁️</div>
-                            <h4>Ray Tracing</h4>
-                            <p>Immerse yourself in lifelike environments with real-time ray tracing and advanced lighting engines.</p>
-                        </div>
-                        <div className="feature-box fade-in">
-                            <div className="feature-icon">🌐</div>
-                            <h4>Ecosystem</h4>
-                            <p>Seamlessly connect your console, PC, and mobile devices through our unified network.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+PHASE 2: CORE DEVELOPMENT CYCLE
+-----------------------------------------
+1. Prototyping: Build the "Core Loop". If your game is a shooter, make a gray-box level where moving and shooting feels fun. Do not worry about art yet.
+2. Asset Pipeline: Replace gray boxes with actual 3D models (from Blender/Maya) or 2D sprites (from Aseprite/Photoshop).
+3. Scripting & Logic: Program enemy AI behaviors, spawn triggers, and score tracking.
+4. Audio & VFX: Add particle systems for explosions and spatial 3D audio for immersion.
 
-            {/* Footer */}
-            <footer className="footer">
-                <div className="container footer-content">
-                    <div className="footer-brand">
-                        <div className="logo">
-                            <span className="neon-text">GAMING</span>
-                        </div>
-                        <p>Pushing the boundaries of interactive entertainment.</p>
+PHASE 3: PERFORMANCE TUNING
+-----------------------------------------
+- Object Pooling: Instead of destroying and recreating bullets, reuse them to save CPU cycles.
+- LOD (Level of Detail): Use lower-poly models for objects far away from the camera.
+- Baking Lighting: Pre-calculate light maps so the GPU doesn't have to render shadows in real-time.
+
+[OK] Neural logic blueprints loaded.
+Your development environment is now ready. Good luck, Operator.
+`;
+      const file = new Blob([fileContent], {type: 'text/plain'});
+      element.href = URL.createObjectURL(file);
+      element.download = "GamingX_GameDev_Guide.txt";
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+  };
+
+  return (
+    <div className="app">
+      <div className="custom-cursor" style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }}></div>
+      <div className="scroll-progress" style={{ width: `${scrollProgress}%`, height: '4px', background: 'var(--accent-cyan)', position: 'fixed', top: 0, zIndex: 3000, boxShadow: '0 0 10px var(--accent-cyan)' }}></div>
+
+      {/* Navbar */}
+      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+          <div className="logo" onClick={() => setCurrentPage('home')}>GAMING<span style={{color: 'var(--accent-pink)'}}>X</span></div>
+          <ul className="nav-links">
+              <li><button className={`nav-btn ${currentPage === 'home' ? 'active' : ''}`} onClick={() => setCurrentPage('home')}>Home</button></li>
+              <li><button className={`nav-btn ${currentPage === 'buy' ? 'active' : ''}`} onClick={() => setCurrentPage('buy')}>Buy</button></li>
+              <li><button className={`nav-btn ${currentPage === 'learn' ? 'active' : ''}`} onClick={() => setCurrentPage('learn')}>Learn</button></li>
+              <li><button className={`nav-btn ${currentPage === 'build' ? 'active' : ''}`} onClick={() => setCurrentPage('build')}>Build</button></li>
+              <li><button className={`nav-btn ${currentPage === 'connect' ? 'active' : ''}`} onClick={() => setCurrentPage('connect')}>Connect</button></li>
+          </ul>
+          <div className="cart-status" onClick={() => setIsCartOpen(true)} style={{fontSize: '1.2rem', fontWeight: 900, color: 'var(--accent-cyan)', cursor: 'pointer'}}>
+              [ STORAGE: {cart.length} ]
+          </div>
+      </nav>
+
+      {/* Cart Panel Overlay */}
+      {isCartOpen && (
+          <div className="cart-overlay" onClick={() => setIsCartOpen(false)}>
+              <div className="cart-panel" onClick={e => e.stopPropagation()}>
+                  <div className="cart-header">
+                      <h2 style={{color: 'var(--accent-cyan)', fontSize: '2rem'}}>STORAGE UNIT</h2>
+                      <button className="close-modal" style={{position: 'static'}} onClick={() => setIsCartOpen(false)}>×</button>
+                  </div>
+                  <div className="cart-items">
+                      {cart.length === 0 ? (
+                          <p style={{color: 'var(--text-dim)', textAlign: 'center', marginTop: '2rem'}}>STORAGE IS EMPTY</p>
+                      ) : (
+                          cart.map((item, index) => (
+                              <div className="cart-item" key={index} style={{position: 'relative'}}>
+                                  <img src={item.imageUrl} alt={item.name} className="cart-item-img" />
+                                  <div className="cart-item-details" style={{flexGrow: 1}}>
+                                      <h4>{item.name}</h4>
+                                      <p style={{fontWeight: 'bold'}}>${item.price}</p>
+                                  </div>
+                                  <button 
+                                      onClick={() => removeFromCart(index)}
+                                      style={{
+                                          background: 'transparent', 
+                                          border: 'none', 
+                                          color: 'var(--accent-pink)', 
+                                          cursor: 'pointer',
+                                          fontSize: '1.2rem',
+                                          padding: '0.5rem'
+                                      }}
+                                      title="Remove Item"
+                                  >
+                                      ✕
+                                  </button>
+                              </div>
+                          ))
+                      )}
+                  </div>
+                  <div className="cart-footer">
+                      <div className="cart-total">
+                          <span>TOTAL</span>
+                          <span>${cart.reduce((total, item) => total + (item.price || 0), 0)}</span>
+                      </div>
+                      <button className="btn btn-primary" style={{width: '100%'}} onClick={() => alert('Checkout flow initiating...')}>INITIALIZE SECURE CHECKOUT</button>
+                  </div>
+              </div>
+          </div>
+      )}
+
+      {selectedModule && (
+          <div className="modal-overlay" onClick={() => setSelectedModule(null)}>
+              <div className="pillar-modal glass fade-in" onClick={e => e.stopPropagation()} style={{maxWidth: '1000px'}}>
+                  <button className="close-modal" onClick={() => setSelectedModule(null)}>×</button>
+                  <h2 style={{fontSize: '3rem', color: 'var(--accent-cyan)', marginBottom: '2rem'}}>{selectedModule.title}</h2>
+                  <div className="modal-content-grid">
+                      <div className="modal-visual">
+                          {selectedModule.type === 'video' && selectedModule.youtubeUrl ? (
+                              <iframe width="100%" height="400" src={selectedModule.youtubeUrl} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                          ) : (
+                              <img src={selectedModule.imageUrl || selectedModule.videoUrl || 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1000'} />
+                          )}
+                      </div>
+                      <div className="modal-text">
+                          <p style={{fontSize: '1.4rem', lineHeight: '1.6', color: 'var(--text-main)'}}>{selectedModule.content}</p>
+                          <button className="btn btn-primary mt-4" onClick={() => setSelectedModule(null)}>DISMISS</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      )}
+
+      <main className="main-content">
+          {currentPage === 'home' && (
+              <div className="fade-in-page">
+                  <header className="hero">
+                      <div className="hero-bg">
+                        <img src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=2000" alt="Cyber Grid" />
+                      </div>
+                      <div className="overlay"></div>
+                      <div className="hero-content">
+                          <h1 className="glitch" data-text="EVOLVE">EVOLVE</h1>
+                          <p style={{fontSize: '1.5rem', color: 'var(--accent-cyan)', letterSpacing: '5px', textTransform: 'uppercase', marginBottom: '3rem'}}>Integrated Gaming Ecosystem v4.0</p>
+                          <div className="hero-buttons">
+                              <button onClick={() => setCurrentPage('buy')} className="btn btn-primary">ENTER MARKET</button>
+                              <button onClick={() => setCurrentPage('build')} className="btn btn-outline" style={{marginLeft: '20px'}}>ACCESS FORGE</button>
+                          </div>
+                      </div>
+                  </header>
+
+                  <div className="stats-ticker">
+                    <div className="ticker-content">
+                        <span>// SYSTEM_STATUS: OPTIMAL // SYNCING_NEURAL_LINKS... // 50,248_USERS_ACTIVE // LATENCY: 0.4MS //</span>
+                        <span>// SYSTEM_STATUS: OPTIMAL // SYNCING_NEURAL_LINKS... // 50,248_USERS_ACTIVE // LATENCY: 0.4MS //</span>
                     </div>
-                    <div className="footer-links">
-                        <h4>Products</h4>
-                        <ul>
-                            <li><a href="#">Consoles</a></li>
-                            <li><a href="#">Custom PCs</a></li>
-                            <li><a href="#">Accessories</a></li>
-                            <li><a href="#">Merch</a></li>
-                        </ul>
-                    </div>
-                    <div className="footer-links">
-                        <h4>Support</h4>
-                        <ul>
-                            <li><a href="#">FAQ</a></li>
-                            <li><a href="#">Warranty</a></li>
-                            <li><a href="#">Contact Us</a></li>
-                        </ul>
-                    </div>
-                    <div className="footer-newsletter">
-                        <h4>Stay Updated</h4>
-                        <form onSubmit={handleSubscribe} className="input-group">
-                            <input
-                                type="email"
-                                placeholder="Enter your email"
-                                aria-label="Email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                            />
-                            <button type="submit" className="btn btn-primary">Subscribe</button>
-                        </form>
-                        {subscribeMessage && <p style={{ marginTop: '10px', color: 'var(--neon-cyan)', fontSize: '0.9rem' }}>{subscribeMessage}</p>}
-                    </div>
-                </div>
-                <div className="footer-bottom">
-                    <p>&copy; 2026 Gaming. All rights reserved.</p>
-                </div>
-            </footer>
-        </div>
-    );
+                  </div>
+
+                  <section className="section">
+                      <div className="container">
+                          <h2 className="page-title" style={{fontSize: '4rem'}}>Core <span style={{color: 'var(--accent-pink)'}}>Sectors</span></h2>
+                          <div className="grid">
+                              <div className="glass fade-in" onClick={() => setCurrentPage('buy')}>
+                                  <div style={{height: '200px', marginBottom: '2rem', overflow: 'hidden'}}>
+                                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=600" style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+                                  </div>
+                                  <h3>Buy</h3>
+                                  <p>High-performance consoles and elite PCs delivered from our cloud inventory.</p>
+                                  <button className="btn btn-outline mt-4" style={{width: '100%'}}>GO TO STORE</button>
+                              </div>
+                              <div className="glass fade-in" onClick={() => setCurrentPage('learn')}>
+                                  <div style={{height: '200px', marginBottom: '2rem', overflow: 'hidden'}}>
+                                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=600" style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+                                  </div>
+                                  <h3>Learn</h3>
+                                  <p>Master your skills with our pro-gaming academy and masterclasses.</p>
+                                  <button className="btn btn-outline mt-4" style={{width: '100%'}}>GO TO ACADEMY</button>
+                              </div>
+                              <div className="glass fade-in" onClick={() => setCurrentPage('build')}>
+                                  <div style={{height: '200px', marginBottom: '2rem', overflow: 'hidden'}}>
+                                    <img src="https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&q=80&w=600" style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+                                  </div>
+                                  <h3>Build</h3>
+                                  <p>Forge your own universe. Access game development engines, coding tutorials, and asset creation guides.</p>
+                                  <button className="btn btn-outline mt-4" style={{width: '100%'}}>GO TO GAME FORGE</button>
+                              </div>
+                          </div>
+                      </div>
+                  </section>
+              </div>
+          )}
+
+          {currentPage === 'buy' && (
+              <div className="page-view buy-view" style={{paddingTop: '150px'}}>
+                  <div className="container">
+                      <h1 className="page-title">GamingX <span style={{color: 'var(--accent-pink)'}}>Store</span></h1>
+                      <div className="grid">
+                          {products.map(p => (
+                              <div className="glass fade-in" key={p._id}>
+                                  <div style={{height: '250px', overflow: 'hidden', marginBottom: '2rem'}}>
+                                      <img src={p.imageUrl} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+                                  </div>
+                                  <h3>{p.name}</h3>
+                                  <div style={{fontSize: '2rem', color: 'var(--accent-cyan)', fontWeight: 900, marginBottom: '1rem'}}>${p.price}</div>
+                                  <p style={{marginBottom: '2rem'}}>{p.description}</p>
+                                  <button onClick={() => addToCart(p)} className="btn btn-primary" style={{width: '100%'}}>ACQUIRE UNIT</button>
+                              </div>
+                          ))}
+                      </div>
+                  </div>
+              </div>
+          )}
+
+          {currentPage === 'learn' && (
+              <div className="page-view learn-view" style={{paddingTop: '150px'}}>
+                  <div className="container">
+                      <h1 className="page-title">GamingX <span style={{color: 'var(--accent-pink)'}}>Academy</span></h1>
+                      <div className="grid">
+                          <div className="glass fade-in">
+                              <div style={{height: '220px', marginBottom: '1.5rem', borderRadius: '4px', overflow: 'hidden', position: 'relative'}}>
+                                  {playingVideos['aim'] ? (
+                                      <iframe width="100%" height="100%" src={learnModules.aim.youtubeUrl + "?autoplay=1"} title="Aim Protocol" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                                  ) : (
+                                      <div style={{width: '100%', height: '100%', cursor: 'pointer'}} onClick={() => playVideo('aim')}>
+                                          <img src={learnModules.aim.videoUrl} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+                                          <div className="play-overlay" style={{width: '60px', height: '60px', fontSize: '1.5rem', background: 'rgba(0,0,0,0.5)', border: '2px solid var(--accent-cyan)'}}>▶</div>
+                                      </div>
+                                  )}
+                              </div>
+                              <h4 style={{color: 'var(--accent-pink)', marginBottom: '0.5rem'}}>MODULE_01</h4>
+                              <h3>{learnModules.aim.title}</h3>
+                              <p>{learnModules.aim.content}</p>
+                          </div>
+                          <div className="glass fade-in">
+                              <div style={{height: '220px', marginBottom: '1.5rem', borderRadius: '4px', overflow: 'hidden', position: 'relative'}}>
+                                  {playingVideos['movement'] ? (
+                                      <iframe width="100%" height="100%" src={learnModules.movement.youtubeUrl + "?autoplay=1"} title="Ghost Movement" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                                  ) : (
+                                      <div style={{width: '100%', height: '100%', cursor: 'pointer'}} onClick={() => playVideo('movement')}>
+                                          <img src={learnModules.movement.videoUrl} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+                                          <div className="play-overlay" style={{width: '60px', height: '60px', fontSize: '1.5rem', background: 'rgba(0,0,0,0.5)', border: '2px solid var(--accent-cyan)'}}>▶</div>
+                                      </div>
+                                  )}
+                              </div>
+                              <h4 style={{color: 'var(--accent-pink)', marginBottom: '0.5rem'}}>MODULE_02</h4>
+                              <h3>{learnModules.movement.title}</h3>
+                              <p>{learnModules.movement.content}</p>
+                          </div>
+                          <div className="glass fade-in">
+                              <div style={{height: '220px', marginBottom: '1.5rem', borderRadius: '4px', overflow: 'hidden', position: 'relative'}}>
+                                  {playingVideos['strategy'] ? (
+                                      <iframe width="100%" height="100%" src={learnModules.strategy.youtubeUrl + "?autoplay=1"} title="Game Sense" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                                  ) : (
+                                      <div style={{width: '100%', height: '100%', cursor: 'pointer'}} onClick={() => playVideo('strategy')}>
+                                          <img src={learnModules.strategy.videoUrl} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+                                          <div className="play-overlay" style={{width: '60px', height: '60px', fontSize: '1.5rem', background: 'rgba(0,0,0,0.5)', border: '2px solid var(--accent-cyan)'}}>▶</div>
+                                      </div>
+                                  )}
+                              </div>
+                              <h4 style={{color: 'var(--accent-pink)', marginBottom: '0.5rem'}}>MODULE_03</h4>
+                              <h3>{learnModules.strategy.title}</h3>
+                              <p>{learnModules.strategy.content}</p>
+                          </div>
+                          <div className="glass fade-in">
+                              <div style={{height: '220px', marginBottom: '1.5rem', borderRadius: '4px', overflow: 'hidden', position: 'relative'}}>
+                                  {playingVideos['optimization'] ? (
+                                      <iframe width="100%" height="100%" src={learnModules.optimization.youtubeUrl + "?autoplay=1"} title="FPS Optimization" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                                  ) : (
+                                      <div style={{width: '100%', height: '100%', cursor: 'pointer'}} onClick={() => playVideo('optimization')}>
+                                          <img src={learnModules.optimization.videoUrl} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+                                          <div className="play-overlay" style={{width: '60px', height: '60px', fontSize: '1.5rem', background: 'rgba(0,0,0,0.5)', border: '2px solid var(--accent-cyan)'}}>▶</div>
+                                      </div>
+                                  )}
+                              </div>
+                              <h4 style={{color: 'var(--accent-pink)', marginBottom: '0.5rem'}}>MODULE_04</h4>
+                              <h3>{learnModules.optimization.title}</h3>
+                              <p>{learnModules.optimization.content}</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          )}
+
+          {currentPage === 'build' && (
+              <div className="page-view build-view" style={{paddingTop: '150px'}}>
+                  <div className="container">
+                      <h1 className="page-title">Game <span style={{color: 'var(--accent-pink)'}}>Development Forge</span></h1>
+                      <div className="glass fade-in p-5">
+                          <div className="build-grid">
+                              <div className="build-steps">
+                                  <div className="step active">ENGINE_INITIALIZATION</div>
+                                  <div className="step">ASSET_PIPELINE</div>
+                                  <div className="step">COMPILE_&_RENDER</div>
+                              </div>
+                              <div className="visual-forge text-center">
+                                  <img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?auto=format&fit=crop&q=80&w=800" style={{width: '100%', borderRadius: '10px', border: '1px solid var(--accent-cyan)'}} />
+                                  <p className="mt-4" style={{color: 'var(--accent-cyan)', fontWeight: 800, letterSpacing: '5px'}}>COMPILING_SOURCE_CODE...</p>
+                                  <div style={{marginTop: '2rem', textAlign: 'left', background: 'rgba(0,0,0,0.5)', padding: '2rem', borderRadius: '8px', borderLeft: '4px solid var(--accent-pink)'}}>
+                                      <h3 style={{color: 'var(--accent-pink)', marginBottom: '1rem'}}>START BUILDING YOUR GAME</h3>
+                                      <p style={{color: 'var(--text-main)', lineHeight: '1.6'}}>
+                                          Whether you are using Unreal Engine 5 for photorealistic graphics, Unity for versatile cross-platform deployment, or Godot for lightweight 2D masterpieces, the Forge is your starting point. Connect with our neural network of developers to access proprietary scripts, 3D character models, and logic blueprints to bring your vision to life.
+                                      </p>
+                                      <button className="btn btn-primary mt-4" onClick={handleDownloadSDK}>DOWNLOAD SDK</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          )}
+
+          {currentPage === 'connect' && (
+              <div className="page-view connect-view" style={{paddingTop: '150px'}}>
+                  <div className="container">
+                      <h1 className="page-title">The <span style={{color: 'var(--accent-pink)'}}>Nexus Hub</span></h1>
+                      <div className="grid">
+                          <div className="glass fade-in text-center">
+                              <h3>Global Nexus</h3>
+                              <p>Connect with 1.2M elite operators across the network.</p>
+                              <a href="https://discord.com" target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-4" style={{display: 'inline-block'}}>JOIN DISCORD</a>
+                          </div>
+                          <div className="glass fade-in text-center">
+                              <h3>Live Stream</h3>
+                              <p>Watching: NEURAL_CHAMPIONSHIPS_2026</p>
+                              <a href="https://twitch.tv" target="_blank" rel="noopener noreferrer" className="btn btn-outline mt-4" style={{display: 'inline-block'}}>TUNE IN</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          )}
+      </main>
+
+      <footer className="footer">
+          <div className="container text-center">
+              <div className="logo" style={{marginBottom: '2rem'}}>GAMING<span style={{color: 'var(--accent-pink)'}}>X</span></div>
+              <p style={{color: 'var(--text-dim)', marginBottom: '2rem'}}>© 2026 GAMINGX_PORTAL. ALL_RIGHTS_RESERVED. [OS_v4.2.1]</p>
+              <button className="nav-btn" onClick={() => setIsAdmin(true)} style={{fontSize: '0.8rem'}}>[ ADMIN_ACCESS ]</button>
+          </div>
+      </footer>
+    </div>
+  );
 }
 
 export default App;

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GamingX | Project Master Blueprint</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Outfit:wght@300;400;600;800&display=swap');
+        
+        :root {
+            --primary: #7209b7;
+            --secondary: #f72585;
+            --bg: #05050a;
+            --card: #0d0d16;
+            --text: #e0e0e6;
+            --accent: #00ff88;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+        }
+
+        .header-hero {
+            background: linear-gradient(135deg, #1a1a2e, #0a0a0f);
+            padding: 100px 5%;
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        h1 { font-family: 'Space Grotesk', sans-serif; font-size: 4rem; margin: 0; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        h2 { font-size: 2.2rem; color: var(--secondary); margin-top: 60px; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; }
+        h2::before { content: ""; width: 30px; height: 4px; background: var(--secondary); border-radius: 2px; }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px; }
+
+        .blueprint-card {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 35px;
+            border-radius: 24px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blueprint-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(114, 9, 183, 0.2); }
+
+        .label { color: var(--accent); font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; display: block; }
+        
+        .tech-pill { display: inline-block; background: rgba(114, 9, 183, 0.15); color: #c196ff; padding: 5px 15px; border-radius: 50px; font-size: 0.9rem; margin: 5px; font-weight: 600; border: 1px solid rgba(114, 9, 183, 0.3); }
+
+        .schema-box { background: #000; padding: 20px; border-radius: 12px; font-family: monospace; color: #f72585; border-left: 4px solid var(--secondary); margin: 20px 0; }
+
+        .flow-diagram { display: flex; flex-direction: column; gap: 15px; }
+        .flow-step { background: #161625; padding: 15px; border-radius: 10px; border-left: 3px solid var(--accent); position: relative; }
+        .flow-step::after { content: "↓"; position: absolute; bottom: -20px; left: 30px; color: var(--accent); }
+        .flow-step:last-child::after { content: ""; }
+
+        footer { text-align: center; padding: 60px; color: #555; border-top: 1px solid #111; margin-top: 80px; }
+    </style>
+</head>
+<body>
+
+    <div class="header-hero">
+        <span class="label">Project Master Document</span>
+        <h1>GAMING<span style="color:#fff">X</span> BLUEPRINT</h1>
+        <p style="font-size: 1.4rem; color: #888; max-width: 800px; margin: 20px auto;">A 360-degree technical and strategic breakdown of the high-performance MERN gaming portal.</p>
+    </div>
+
+    <div class="container">
+        
+        <section id="overview">
+            <h2>01. Project Foundation</h2>
+            <div class="grid">
+                <div class="blueprint-card">
+                    <span class="label">The Overview</span>
+                    <h3>Product Vision</h3>
+                    <p>GamingX is a full-stack e-commerce engine designed specifically for the luxury gaming hardware market. It bridges the gap between high-performance computing and high-end visual design.</p>
+                </div>
+                <div class="blueprint-card">
+                    <span class="label">Objectives</span>
+                    <h3>Core Goals</h3>
+                    <ul>
+                        <li>Deliver sub-2s page loads.</li>
+                        <li>Automate inventory management.</li>
+                        <li>Build a global customer database.</li>
+                        <li>Simulate a high-tech "Neural" environment.</li>
+                    </ul>
+                </div>
+                <div class="blueprint-card">
+                    <span class="label">Tools Used</span>
+                    <h3>The Arsenal</h3>
+                    <div style="margin-top: 15px;">
+                        <span class="tech-pill">React 18</span>
+                        <span class="tech-pill">Node.js</span>
+                        <span class="tech-pill">MongoDB Atlas</span>
+                        <span class="tech-pill">Express.js</span>
+                        <span class="tech-pill">Axios</span>
+                        <span class="tech-pill">Vite</span>
+                        <span class="tech-pill">Serveo</span>
+                        <span class="tech-pill">Antigravity AI</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="roles">
+            <h2>02. User Ecosystem</h2>
+            <div class="grid">
+                <div class="blueprint-card">
+                    <span class="label">Role: Customer</span>
+                    <h3>End-User Capabilities</h3>
+                    <p>Browse dynamic product categories, interact with 3D elements, subscribe to intel updates, and manage a real-time shopping cart.</p>
+                </div>
+                <div class="blueprint-card">
+                    <span class="label">Role: Administrator</span>
+                    <h3>Command Capabilities</h3>
+                    <p>Access secret dashboard, monitor system health, perform real-time CRUD on inventory, and access the global subscriber ledger.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="features">
+            <h2>03. Core Systems</h2>
+            <div class="grid">
+                <div class="blueprint-card">
+                    <span class="label">Scorecard System</span>
+                    <h3>Live Analytics</h3>
+                    <p>Real-time visual data tracking for sales performance, user traffic, and database latency. Provides immediate business feedback to managers.</p>
+                </div>
+                <div class="blueprint-card">
+                    <span class="label">Payment Architecture</span>
+                    <h3>Transaction Logic</h3>
+                    <p>A multi-stage checkout simulation that validates cart state, calculates total investment, and prepares data for Stripe/PayPal integration.</p>
+                </div>
+                <div class="blueprint-card">
+                    <span class="label">Neural Assistant</span>
+                    <h3>AI Chat Integration</h3>
+                    <p>A rule-based chatbot interface that simulates an advanced AI model to assist users with system optimizations.</p>
+                </div>
+                <div class="blueprint-card">
+                    <span class="label">Brand History</span>
+                    <h3>Interactive Timeline</h3>
+                    <p>A data-driven storytelling component that visually tracks the brand's evolution from 'The Spark' to 'Mainstream Launch'.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="data">
+            <h2>04. Data Intelligence</h2>
+            <div class="label">Database Models (MongoDB Atlas)</div>
+            <div class="grid">
+                <div class="blueprint-card">
+                    <h3>Product Model</h3>
+                    <div class="schema-box">
+                        { name: String, price: Number, category: String, imageUrl: String, description: String }
+                    </div>
+                </div>
+                <div class="blueprint-card">
+                    <h3>Timeline Model</h3>
+                    <div class="schema-box">
+                        { order: Number, title: String, date: String, description: String, type: String, imageUrl: String }
+                    </div>
+                </div>
+                <div class="blueprint-card">
+                    <h3>Subscriber Model</h3>
+                    <div class="schema-box">
+                        { email: String, date: Date }
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture">
+            <h2>05. Tech Architecture</h2>
+            <div class="blueprint-card" style="margin-bottom: 30px;">
+                <span class="label">The MERN Stack Flow</span>
+                <div class="flow-diagram">
+                    <div class="flow-step"><strong>Frontend:</strong> React renders the Virtual DOM and manages state (Cart/Admin).</div>
+                    <div class="flow-step"><strong>Transport:</strong> Axios sends JSON requests across the secure Serveo tunnel.</div>
+                    <div class="flow-step"><strong>API Layer:</strong> Express.js processes routes and applies business logic.</div>
+                    <div class="flow-step"><strong>Persistence:</strong> MongoDB Atlas securely stores and indexes global cloud data.</div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>GamingX Master Blueprint | Confidential Strategy Document | © 2026</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>

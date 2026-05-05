@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GamingX | Technical Documentation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=Outfit:wght@300;400;700&display=swap');
+        
+        :root {
+            --primary: #7209b7;
+            --secondary: #f72585;
+            --dark: #0a0a0f;
+            --card: #12121c;
+            --text: #ffffff;
+            --muted: #a0a0b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--dark);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .sidebar {
+            width: 300px;
+            height: 100vh;
+            position: fixed;
+            background: #050508;
+            padding: 40px 20px;
+            border-right: 1px solid rgba(247, 37, 133, 0.2);
+        }
+
+        .main-content {
+            margin-left: 300px;
+            padding: 60px 80px;
+            max-width: 1200px;
+        }
+
+        h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
+        h1 { font-size: 3.5rem; margin-bottom: 20px; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        h2 { font-size: 2rem; margin: 40px 0 20px; color: var(--secondary); border-left: 4px solid var(--secondary); padding-left: 15px; }
+
+        .glass-card {
+            background: var(--card);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        code {
+            background: #1e1e2e;
+            color: #f72585;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        pre {
+            background: #050508;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin: 20px 0;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+            border: 1px solid #00ff88;
+        }
+
+        ul { margin-left: 20px; margin-bottom: 20px; }
+        li { margin-bottom: 10px; color: var(--muted); }
+
+        .nav-link {
+            display: block;
+            color: var(--muted);
+            text-decoration: none;
+            padding: 10px 0;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .nav-link:hover { color: var(--secondary); }
+
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 40px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h3 style="margin-bottom: 30px;">Gaming<span style="color:var(--secondary)">X</span> Docs</h3>
+        <a href="#intro" class="nav-link">Introduction</a>
+        <a href="#arch" class="nav-link">System Architecture</a>
+        <a href="#admin" class="nav-link">Admin Dashboard</a>
+        <a href="#timeline" class="nav-link">Project Timeline</a>
+        <a href="#api" class="nav-link">API Endpoints</a>
+        <a href="#db" class="nav-link">Database Setup</a>
+        <a href="#deploy" class="nav-link">Deployment</a>
+    </div>
+
+    <div class="main-content">
+        <section id="intro">
+            <h1>Technical Manual v1.0</h1>
+            <p style="font-size: 1.2rem; color: var(--muted);">A comprehensive guide to the GamingX MERN stack ecosystem, covering development, management, and deployment.</p>
+        </section>
+
+        <section id="arch">
+            <h2>1. System Architecture</h2>
+            <div class="glass-card">
+                <p>The project follows a decoupled architecture using the <strong>MERN</strong> stack:</p>
+                <ul>
+                    <li><strong>Frontend (React):</strong> Handles all UI logic, state management (cart, admin mode), and interactive animations.</li>
+                    <li><strong>Backend (Node/Express):</strong> Provides a RESTful API to manage products and newsletter subscriptions.</li>
+                    <li><strong>Database (MongoDB Atlas):</strong> A cloud-hosted NoSQL database for scalable data storage.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="admin">
+            <h2>2. Admin Dashboard Features</h2>
+            <div class="glass-card">
+                <p>The Admin Dashboard is the nerve center of the application, accessible via the <strong>"Admin"</strong> button in the navbar.</p>
+                <h3>Core Capabilities:</h3>
+                <ul>
+                    <li><strong>Analytics:</strong> Live charts showing sales performance and active user count.</li>
+                    <li><strong>System Health:</strong> Real-time pulse monitoring of the MongoDB connection.</li>
+                    <li><strong>Product Management:</strong> CRUD (Create, Read, Update, Delete) operations for all gear.</li>
+                    <li><strong>Image Preview:</strong> Visual validation of product images before saving.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="timeline">
+            <h2>3. Project Timeline (History)</h2>
+            <div class="glass-card">
+                <p>The <strong>History of GamingX</strong> is an interactive story section that fetches milestones from the database:</p>
+                <ul>
+                    <li><strong>Dynamic Milestone Fetching:</strong> Pulls events (Title, Date, Description, Images) directly from MongoDB.</li>
+                    <li><strong>Categorized Events:</strong> Events are tagged as <code>start</code>, <code>milestone</code>, <code>launch</code>, or <code>result</code>.</li>
+                    <li><strong>Order Preservation:</strong> Automatically sorts events based on the <code>order</code> field.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="api">
+            <h2>4. API Reference</h2>
+            <div class="glass-card">
+                <h3>Product Routes</h3>
+                <pre>GET /api/products          - Fetch all products
+POST /api/products         - Add a new product
+DELETE /api/products/:id   - Remove a product</pre>
+
+                <h3>Timeline Routes</h3>
+                <pre>GET /api/timeline          - Fetch all history events
+POST /api/timeline         - Add a history milestone</pre>
+                
+                <h3>Subscription Routes</h3>
+                <pre>GET /api/subscribers       - List all email signups
+POST /api/subscribe        - User newsletter signup</pre>
+            </div>
+        </section>
+
+        <section id="db">
+            <h2>4. Database Configuration</h2>
+            <div class="glass-card">
+                <p>Your database is hosted on <strong>MongoDB Atlas</strong>. To maintain access:</p>
+                <ul>
+                    <li><strong>IP Whitelisting:</strong> If your network changes, you must add your new IP to the "Network Access" tab in the Atlas dashboard.</li>
+                    <li><strong>Environment Variables:</strong> The backend uses a <code>.env</code> file to store the <code>MONGO_URI</code> securely.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="deploy">
+            <h2>5. Production Deployment</h2>
+            <div class="glass-card">
+                <p>To move this project to the public internet:</p>
+                <ul>
+                    <li><strong>Frontend:</strong> Deploy the <code>/frontend</code> folder to <strong>Vercel</strong> or Netlify.</li>
+                    <li><strong>Backend:</strong> Deploy the <code>/backend</code> folder to <strong>Render</strong> or Heroku.</li>
+                    <li><strong>Sync:</strong> Update the frontend <code>axios</code> URLs from <code>serveo.net</code> to your permanent Render URL.</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer style="margin-top: 100px; color: var(--muted); text-align: center;">
+            <p>&copy; 2026 GamingX Tech Docs | Generated by Antigravity AI Assistant</p>
+        </footer>
+    </div>
+</body>
+</html>

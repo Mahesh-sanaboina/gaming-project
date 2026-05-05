@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRD | GamingX Portal</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #1a1a1a; max-width: 900px; margin: 0 auto; padding: 60px 20px; background: #fff; }
+        header { border-bottom: 2px solid #000; margin-bottom: 50px; padding-bottom: 20px; }
+        h1 { font-size: 2.2rem; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
+        h2 { font-size: 1.4rem; font-weight: 700; margin-top: 40px; border-bottom: 1px solid #eee; padding-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        h3 { font-size: 1.1rem; font-weight: 700; margin-top: 25px; color: #333; }
+        .meta-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9rem; }
+        .meta-table td { padding: 8px; border: 1px solid #eee; }
+        .meta-table td:first-child { background: #f9f9f9; font-weight: 600; width: 30%; }
+        .requirement-box { background: #fcfcfc; border: 1px solid #efefef; padding: 20px; border-radius: 6px; margin: 20px 0; }
+        .req-id { font-weight: 800; color: #2563eb; margin-right: 10px; }
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; margin-left: 10px; }
+        .p1 { background: #fee2e2; color: #991b1b; } /* High Priority */
+        .p2 { background: #fef3c7; color: #92400e; } /* Medium Priority */
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+        footer { margin-top: 80px; font-size: 0.8rem; color: #888; text-align: center; border-top: 1px solid #eee; padding-top: 20px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Product Requirements Document: GamingX</h1>
+    <p style="color: #666;">Industry Standard v1.2 | Internal Use Only</p>
+</header>
+
+<h2>1. Document Information</h2>
+<table class="meta-table">
+    <tr><td>Product Name</td><td>GamingX E-Commerce Portal</td></tr>
+    <tr><td>Document Owner</td><td>Antigravity AI (Lead Product Designer)</td></tr>
+    <tr><td>Target Release</td><td>Q2 2026</td></tr>
+    <tr><td>Primary Goal</td><td>Launch a premium gaming hardware storefront with integrated cloud management.</td></tr>
+</table>
+
+<h2>2. Context & Objectives</h2>
+<p>GamingX addresses the lack of high-fidelity retail experiences for high-end gaming hardware. The objective is to provide a "Cyberpunk" immersion layer over a robust MERN stack backend to drive conversion through aesthetic authority.</p>
+
+<h2>3. User Stories</h2>
+<ul>
+    <li><strong>As a Customer,</strong> I want to browse products in an immersive dark-mode interface so that the shopping experience matches my gaming lifestyle.</li>
+    <li><strong>As a Customer,</strong> I want a real-time shopping cart so that I can easily track my potential purchases.</li>
+    <li><strong>As an Admin,</strong> I want a secure dashboard to manage inventory so that I don't need technical skills to update my store.</li>
+    <li><strong>As an Admin,</strong> I want to monitor system health and sales data in one place to make informed business decisions.</li>
+</ul>
+
+<h2>4. Functional Requirements</h2>
+
+<div class="requirement-box">
+    <span class="req-id">FR-01</span> <strong>Real-time Cloud Sync</strong> <span class="tag p1">P1</span>
+    <p>System must synchronize all product and subscriber data with MongoDB Atlas Cloud with sub-500ms latency.</p>
+</div>
+
+<div class="requirement-box">
+    <span class="req-id">FR-02</span> <strong>Admin Command Center</strong> <span class="tag p1">P1</span>
+    <p>A restricted view providing CRUD operations for products, subscriber auditing, and live system logs.</p>
+</div>
+
+<div class="requirement-box">
+    <span class="req-id">FR-03</span> <strong>Neural Activity Log</strong> <span class="tag p2">P2</span>
+    <p>A dashboard component that provides a chronological feed of system events (DB connection, new subs, etc.).</p>
+</div>
+
+<div class="requirement-box">
+    <span class="req-id">FR-04</span> <strong>Visual Image Preview</strong> <span class="tag p2">P2</span>
+    <p>Product upload forms must render a live preview of images before database commitment.</p>
+</div>
+
+<h2>5. Non-Functional Requirements</h2>
+<ul>
+    <li><strong>Availability:</strong> System must maintain 99.9% uptime via MongoDB Atlas cluster redundancy.</li>
+    <li><strong>Performance:</strong> First Contentful Paint (FCP) must be under 1.5 seconds on desktop.</li>
+    <li><strong>Security:</strong> API access must be restricted to whitelisted IP addresses in the Atlas dashboard.</li>
+</ul>
+
+<h2>6. Success Metrics (KPIs)</h2>
+<ul>
+    <li><strong>Engagement:</strong> Average time spent on site (Target: >3 minutes).</li>
+    <li><strong>Lead Gen:</strong> Number of weekly newsletter subscriptions.</li>
+    <li><strong>Operational Speed:</strong> Time taken to add/delete a product via Dashboard vs Manual DB entry.</li>
+</ul>
+
+<footer>
+    <p>GamingX PRD | Generated by Antigravity AI | © 2026</p>
+</footer>
+
+</body>
+</html>
