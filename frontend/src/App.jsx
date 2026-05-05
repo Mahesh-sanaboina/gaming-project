@@ -28,16 +28,49 @@ function App() {
   const [playingVideos, setPlayingVideos] = useState({});
   const [checkoutState, setCheckoutState] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [checkoutForm, setCheckoutForm] = useState({
+      fullName: '', email: '', phone: '', address: '', city: '', state: '', zip: '',
+      cardNumber: '', expiry: '', cvv: ''
+  });
+  const [paymentMethod, setPaymentMethod] = useState('card');
+  const [orderDetails, setOrderDetails] = useState(null);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const handleCheckout = () => {
       if (cart.length === 0) return;
+      setCurrentPage('checkout');
+      setIsCartOpen(false);
+      setCheckoutState(null);
+  };
+
+  const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setCheckoutForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleFinalPayment = (e) => {
+      e.preventDefault();
       setCheckoutState('processing');
+      
       setTimeout(() => {
+          const newOrder = {
+              id: 'GX-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
+              items: cart,
+              total: cart.reduce((total, item) => total + (item.price || 0), 0),
+              date: new Date().toISOString(),
+              billing: checkoutForm,
+              payment: paymentMethod
+          };
+          
+          setOrderDetails(newOrder);
           setCheckoutState('success');
           setCart([]);
-      }, 2500);
+          
+          // Store in local storage
+          const history = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+          localStorage.setItem('orderHistory', JSON.stringify([...history, newOrder]));
+      }, 3000);
   };
 
   const closeCheckout = () => {
@@ -261,12 +294,16 @@ Your development environment is now ready. Good luck, Operator.
       )}
 
       {/* Checkout Success Modal */}
-      {checkoutState === 'success' && (
+      {checkoutState === 'success' && orderDetails && (
           <div className="modal-overlay" onClick={closeCheckout}>
               <div className="pillar-modal glass fade-in text-center" onClick={e => e.stopPropagation()} style={{maxWidth: '600px', width: '90%'}}>
-                  <h2 style={{fontSize: '3rem', color: 'var(--accent-cyan)', marginBottom: '1rem'}}>TRANSACTION COMPLETE</h2>
-                  <p style={{fontSize: '1.2rem', color: 'var(--text-main)', marginBottom: '2rem'}}>
-                      Neural link established. Your hardware is being prepared for immediate deployment to your sector.
+                  <div className="success-icon" style={{fontSize: '5rem', color: 'var(--accent-cyan)', marginBottom: '1rem'}}>✓</div>
+                  <h2 style={{fontSize: '2.5rem', color: 'var(--accent-cyan)', marginBottom: '1rem'}}>TRANSACTION SECURE</h2>
+                  <p style={{fontSize: '1.2rem', color: 'var(--text-main)', marginBottom: '0.5rem'}}>
+                      Order Confirmed: <span style={{color: 'var(--accent-pink)', fontWeight: 'bold'}}>{orderDetails.id}</span>
+                  </p>
+                  <p style={{fontSize: '1rem', color: 'var(--text-dim)', marginBottom: '2rem'}}>
+                      Neural link established. Total of ${orderDetails.total} has been authorized.
                   </p>
                   <button className="btn btn-primary" onClick={closeCheckout}>RETURN TO HUB</button>
               </div>
@@ -296,6 +333,85 @@ Your development environment is now ready. Good luck, Operator.
       )}
 
       <main className="main-content">
+          {currentPage === 'checkout' && (
+              <div className="checkout-view fade-in-page section">
+                  <div className="container">
+                      <h1 className="page-title">Secure Checkout</h1>
+                      <div className="checkout-grid">
+                          {/* Left Column: Form */}
+                          <div className="checkout-form-container glass">
+                              <form onSubmit={handleFinalPayment}>
+                                  <h3 className="section-subtitle">Billing Details</h3>
+                                  <div className="form-group">
+                                      <input type="text" name="fullName" placeholder="FULL NAME" required value={checkoutForm.fullName} onChange={handleInputChange} className="cyber-input" />
+                                  </div>
+                                  <div className="form-row">
+                                      <input type="email" name="email" placeholder="EMAIL ADDRESS" required value={checkoutForm.email} onChange={handleInputChange} className="cyber-input" />
+                                      <input type="tel" name="phone" placeholder="PHONE NUMBER" required value={checkoutForm.phone} onChange={handleInputChange} className="cyber-input" />
+                                  </div>
+                                  <div className="form-group">
+                                      <input type="text" name="address" placeholder="SHIPPING ADDRESS" required value={checkoutForm.address} onChange={handleInputChange} className="cyber-input" />
+                                  </div>
+                                  <div className="form-row">
+                                      <input type="text" name="city" placeholder="CITY" required value={checkoutForm.city} onChange={handleInputChange} className="cyber-input" />
+                                      <input type="text" name="state" placeholder="STATE" required value={checkoutForm.state} onChange={handleInputChange} className="cyber-input" />
+                                      <input type="text" name="zip" placeholder="ZIP CODE" required value={checkoutForm.zip} onChange={handleInputChange} className="cyber-input" />
+                                  </div>
+
+                                  <h3 className="section-subtitle" style={{marginTop: '3rem'}}>Payment Method</h3>
+                                  <div className="payment-selector">
+                                      <button type="button" className={`pay-method-btn ${paymentMethod === 'card' ? 'active' : ''}`} onClick={() => setPaymentMethod('card')}>CREDIT CARD</button>
+                                      <button type="button" className={`pay-method-btn ${paymentMethod === 'upi' ? 'active' : ''}`} onClick={() => setPaymentMethod('upi')}>UPI / NET BANKING</button>
+                                      <button type="button" className={`pay-method-btn ${paymentMethod === 'cod' ? 'active' : ''}`} onClick={() => setPaymentMethod('cod')}>CASH ON DELIVERY</button>
+                                  </div>
+
+                                  {paymentMethod === 'card' && (
+                                      <div className="card-details fade-in">
+                                          <div className="form-group">
+                                              <input type="text" name="cardNumber" placeholder="CARD NUMBER (XXXX XXXX XXXX XXXX)" required value={checkoutForm.cardNumber} onChange={handleInputChange} className="cyber-input" />
+                                          </div>
+                                          <div className="form-row">
+                                              <input type="text" name="expiry" placeholder="MM/YY" required value={checkoutForm.expiry} onChange={handleInputChange} className="cyber-input" />
+                                              <input type="text" name="cvv" placeholder="CVV" required value={checkoutForm.cvv} onChange={handleInputChange} className="cyber-input" />
+                                          </div>
+                                      </div>
+                                  )}
+
+                                  <button type="submit" className="btn btn-primary checkout-pay-btn" disabled={checkoutState === 'processing'}>
+                                      {checkoutState === 'processing' ? 'PROCESSING ENCRYPTION...' : 'AUTHORIZE & PAY NOW'}
+                                  </button>
+                              </form>
+                          </div>
+
+                          {/* Right Column: Summary */}
+                          <div className="checkout-summary-container">
+                              <div className="glass">
+                                  <h3 className="section-subtitle">Order Summary</h3>
+                                  <div className="summary-items">
+                                      {cart.map((item, idx) => (
+                                          <div key={idx} className="summary-item">
+                                              <div className="summary-item-info">
+                                                  <span className="summary-name">{item.name}</span>
+                                                  <span className="summary-qty">QTY: 1</span>
+                                              </div>
+                                              <span className="summary-price">${item.price}</span>
+                                          </div>
+                                      ))}
+                                  </div>
+                                  <div className="summary-total">
+                                      <span>TOTAL AMOUNT</span>
+                                      <span className="total-value">${cart.reduce((total, item) => total + (item.price || 0), 0)}</span>
+                                  </div>
+                              </div>
+                              <div className="security-badge">
+                                  <span className="icon">🔒</span> 256-BIT NEURAL ENCRYPTION ACTIVE
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          )}
+
           {currentPage === 'home' && (
               <div className="fade-in-page">
                   <header className="hero">
