@@ -154,6 +154,10 @@ function App() {
     return () => observer.disconnect();
   }, [products, currentPage]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
   const addToCart = (product) => {
       setCart([...cart, product]);
       setIsCartOpen(true);
