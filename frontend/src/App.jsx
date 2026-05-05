@@ -26,6 +26,21 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [playingVideos, setPlayingVideos] = useState({});
+  const [checkoutState, setCheckoutState] = useState(null);
+
+  const handleCheckout = () => {
+      if (cart.length === 0) return;
+      setCheckoutState('processing');
+      setTimeout(() => {
+          setCheckoutState('success');
+          setCart([]);
+      }, 2500);
+  };
+
+  const closeCheckout = () => {
+      setCheckoutState(null);
+      setIsCartOpen(false);
+  };
 
   const playVideo = (key) => {
       setPlayingVideos(prev => ({ ...prev, [key]: true }));
@@ -223,8 +238,28 @@ Your development environment is now ready. Good luck, Operator.
                           <span>TOTAL</span>
                           <span>${cart.reduce((total, item) => total + (item.price || 0), 0)}</span>
                       </div>
-                      <button className="btn btn-primary" style={{width: '100%'}} onClick={() => alert('Checkout flow initiating...')}>INITIALIZE SECURE CHECKOUT</button>
+                      <button 
+                          className="btn btn-primary" 
+                          style={{width: '100%'}} 
+                          onClick={handleCheckout}
+                          disabled={cart.length === 0 || checkoutState === 'processing'}
+                      >
+                          {checkoutState === 'processing' ? 'ESTABLISHING SECURE UPLINK...' : 'INITIALIZE SECURE CHECKOUT'}
+                      </button>
                   </div>
+              </div>
+          </div>
+      )}
+
+      {/* Checkout Success Modal */}
+      {checkoutState === 'success' && (
+          <div className="modal-overlay" onClick={closeCheckout}>
+              <div className="pillar-modal glass fade-in text-center" onClick={e => e.stopPropagation()} style={{maxWidth: '600px'}}>
+                  <h2 style={{fontSize: '3rem', color: 'var(--accent-cyan)', marginBottom: '1rem'}}>TRANSACTION COMPLETE</h2>
+                  <p style={{fontSize: '1.2rem', color: 'var(--text-main)', marginBottom: '2rem'}}>
+                      Neural link established. Your hardware is being prepared for immediate deployment to your sector.
+                  </p>
+                  <button className="btn btn-primary" onClick={closeCheckout}>RETURN TO HUB</button>
               </div>
           </div>
       )}
