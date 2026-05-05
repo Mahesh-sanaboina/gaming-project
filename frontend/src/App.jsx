@@ -8,7 +8,11 @@ const fallbackProducts = [
     { _id: '3', name: 'Zenith Pro Headset', price: 299, description: 'Audiophile-grade wireless headset with pristine sound and cloud-soft comfort.', category: 'accessory', imageUrl: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&q=80&w=1000' },
     { _id: '4', name: 'Cyber-Mechanical Keyboard', price: 189, description: 'Ultra-responsive optical switches with per-key RGB and titanium frame.', category: 'accessory', imageUrl: 'https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&q=80&w=1000' },
     { _id: '5', name: 'Nexus Gaming Monitor', price: 899, description: '32-inch 4K OLED display with 240Hz refresh rate and ultra-low response time.', category: 'accessory', imageUrl: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&q=80&w=1000' },
-    { _id: '6', name: 'Titan Gaming Chair', price: 549, description: 'Ergonomic carbon-fiber design with magnetic memory foam lumbar support.', category: 'accessory', imageUrl: '/cyberpunk_gaming_chair.png' }
+    { _id: '6', name: 'Titan Gaming Chair', price: 549, description: 'Ergonomic carbon-fiber design with magnetic memory foam lumbar support.', category: 'accessory', imageUrl: '/cyberpunk_gaming_chair.png' },
+    { _id: '7', name: 'Phantom Pro Mouse', price: 149, description: 'Ultra-lightweight wireless esports mouse with an optical sensor and 8000Hz polling rate.', category: 'accessory', imageUrl: 'https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=1000' },
+    { _id: '8', name: 'GlideX Glass Mousepad', price: 99, description: 'Tempered glass surface for frictionless, pixel-perfect tracking and durability.', category: 'accessory', imageUrl: 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&q=80&w=1000' },
+    { _id: '9', name: 'Aura Studio Mic', price: 199, description: 'Professional XLR/USB microphone with active noise cancellation and RGB shock mount.', category: 'accessory', imageUrl: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&q=80&w=1000' },
+    { _id: '10', name: 'Vortex VR Lens', price: 799, description: 'Next-generation untethered virtual reality with 8K per eye resolution and haptic feedback.', category: 'console', imageUrl: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&q=80&w=1000' }
 ];
 
 function App() {
@@ -56,10 +60,12 @@ function App() {
 
 
 
+  const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+
   const fetchProducts = async () => {
     try {
-      const res = await axios.get('/api/products');
-      if (res.data && res.data.length > 0) {
+      const res = await axios.get(`${API_BASE_URL}/api/products`);
+      if (res.data && Array.isArray(res.data) && res.data.length > 0) {
           setProducts(res.data);
       } else {
           setProducts(fallbackProducts);
