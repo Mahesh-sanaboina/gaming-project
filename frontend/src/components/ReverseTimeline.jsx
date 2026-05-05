@@ -11,7 +11,7 @@ const ReverseTimeline = () => {
         const fetchEvents = async () => {
             try {
                 // Use relative path or base URL from env
-                const res = await axios.get('http://localhost:5000/api/timeline');
+                const res = await axios.get('/api/timeline');
                 setEvents(res.data);
             } catch (err) {
                 console.error('Error fetching timeline:', err);
