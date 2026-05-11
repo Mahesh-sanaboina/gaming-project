@@ -619,3 +619,76 @@ body::before {
     letter-spacing: 1px;
 }
 
+/* Admin Dashboard Specialized Styles */
+.admin-dashboard {
+    color: var(--text-main);
+    z-index: 5000;
+}
+
+.admin-header h1 {
+    letter-spacing: 10px;
+    text-shadow: 0 0 20px var(--accent-cyan);
+}
+
+.mini-chart {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.log-container::-webkit-scrollbar {
+    width: 4px;
+}
+
+.log-container::-webkit-scrollbar-thumb {
+    background: var(--accent-cyan);
+    border-radius: 10px;
+}
+
+.fade-in-page {
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Pulse animation for active system status */
+.stats-ticker {
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-ticker::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 242, 255, 0.2), transparent);
+    animation: scanline-stats 4s linear infinite;
+}
+
+@keyframes scanline-stats {
+    to { left: 200%; }
+}
+
+/* High fidelity table styles */
+table tbody tr:hover {
+    background: rgba(0, 242, 255, 0.05);
+    box-shadow: inset 0 0 10px rgba(0, 242, 255, 0.1);
+}
+
+/* Neural activity log glitch effect on error */
+.log-error {
+    color: var(--accent-pink) !important;
+    text-shadow: 0 0 5px var(--accent-pink);
+    animation: shake 0.2s infinite;
+}
+
+@keyframes shake {
+    0% { transform: translate(0); }
+    25% { transform: translate(-1px, 1px); }
+    50% { transform: translate(1px, -1px); }
+    75% { transform: translate(-1px, -1px); }
+    100% { transform: translate(0); }
+}

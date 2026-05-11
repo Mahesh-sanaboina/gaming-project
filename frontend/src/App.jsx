@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './index.css';
+import AdminDashboard from './components/AdminDashboard';
+import PaymentGateway from './components/PaymentGateway';
+
+axios.defaults.baseURL = 'http://127.0.0.1:5000';
 
 const fallbackProducts = [
     { _id: '1', name: 'Quantum Console X', price: 499, description: 'Next-gen performance in a sleek pearl-white design. Optimized for 4K 120Hz gaming.', category: 'console', imageUrl: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=1000' },
@@ -34,6 +38,7 @@ function App() {
   });
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [orderDetails, setOrderDetails] = useState(null);
+  const [isGatewayOpen, setIsGatewayOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -51,7 +56,12 @@ function App() {
 
   const handleFinalPayment = (e) => {
       e.preventDefault();
+      setIsGatewayOpen(true);
+  };
+
+  const executeOrderSync = () => {
       setCheckoutState('processing');
+      setIsGatewayOpen(false);
       
       setTimeout(() => {
           const newOrder = {
@@ -220,6 +230,20 @@ Your development environment is now ready. Good luck, Operator.
     <div className="app">
       <div className="custom-cursor" style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }}></div>
       <div className="scroll-progress" style={{ width: `${scrollProgress}%`, height: '4px', background: 'var(--accent-cyan)', position: 'fixed', top: 0, zIndex: 3000, boxShadow: '0 0 10px var(--accent-cyan)' }}></div>
+
+      {isAdmin && (
+          <div style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 5000}}>
+              <AdminDashboard onBack={() => setIsAdmin(false)} />
+          </div>
+      )}
+
+      {isGatewayOpen && (
+          <PaymentGateway 
+              amount={cart.reduce((total, item) => total + (item.price || 0), 0)} 
+              onSucess={executeOrderSync}
+              onCancel={() => setIsGatewayOpen(false)}
+          />
+      )}
 
       {/* Navbar */}
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
@@ -468,6 +492,20 @@ Your development environment is now ready. Good luck, Operator.
                                   <p>Forge your own universe. Access game development engines, coding tutorials, and asset creation guides.</p>
                                   <button className="btn btn-outline mt-4" style={{width: '100%'}}>GO TO GAME FORGE</button>
                               </div>
+                          </div>
+                      </div>
+                  </section>
+
+                  {/* Integrated Admin Hub Section on Home Page */}
+                  <section className="section" id="admin-hub" style={{background: 'rgba(0,0,0,0.4)', borderTop: '1px solid var(--glass-border)'}}>
+                      <div className="container">
+                          <div style={{textAlign: 'center', marginBottom: '4rem'}}>
+                              <h2 className="glitch" data-text="SYSTEM_HUB" style={{fontSize: '3.5rem'}}>SYSTEM_HUB</h2>
+                              <p style={{color: 'var(--accent-cyan)', letterSpacing: '5px'}}>REAL-TIME_DATABASE_MANAGEMENT</p>
+                          </div>
+                          
+                          <div className="glass" style={{padding: '0', border: 'none', background: 'transparent'}}>
+                              <AdminDashboard onBack={null} />
                           </div>
                       </div>
                   </section>

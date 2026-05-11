@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './index.css';
+import AdminDashboard from './components/AdminDashboard';
+
+axios.defaults.baseURL = 'http://127.0.0.1:5000';
 
 const fallbackProducts = [
     { _id: '1', name: 'Quantum Console X', price: 499, description: 'Next-gen performance in a sleek pearl-white design. Optimized for 4K 120Hz gaming.', category: 'console', imageUrl: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=1000' },
@@ -22,6 +25,8 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [playingVideos, setPlayingVideos] = useState({});
+  const [checkoutData, setCheckoutData] = useState({ name: '', email: '', address: '', payment: 'card' });
+  const [orderId, setOrderId] = useState('');
 
   const playVideo = (key) => {
       setPlayingVideos(prev => ({ ...prev, [key]: true }));
@@ -106,6 +111,14 @@ function App() {
       setCart(cart.filter((_, index) => index !== indexToRemove));
   };
 
+  const handleCheckoutSubmit = (e) => {
+      e.preventDefault();
+      const id = 'GX-' + Math.random().toString(16).slice(2, 10).toUpperCase();
+      setOrderId(id);
+      setCurrentPage('success');
+      setCart([]);
+  };
+
   const handleDownloadSDK = () => {
       const element = document.createElement("a");
       const fileContent = `=========================================
@@ -159,6 +172,12 @@ Your development environment is now ready. Good luck, Operator.
     <div className="app">
       <div className="custom-cursor" style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }}></div>
       <div className="scroll-progress" style={{ width: `${scrollProgress}%`, height: '4px', background: 'var(--accent-cyan)', position: 'fixed', top: 0, zIndex: 3000, boxShadow: '0 0 10px var(--accent-cyan)' }}></div>
+
+      {isAdmin && (
+          <div style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 5000}}>
+              <AdminDashboard onBack={() => setIsAdmin(false)} />
+          </div>
+      )}
 
       {/* Navbar */}
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
@@ -217,7 +236,7 @@ Your development environment is now ready. Good luck, Operator.
                           <span>TOTAL</span>
                           <span>${cart.reduce((total, item) => total + (item.price || 0), 0)}</span>
                       </div>
-                      <button className="btn btn-primary" style={{width: '100%'}} onClick={() => alert('Checkout flow initiating...')}>INITIALIZE SECURE CHECKOUT</button>
+                      <button className="btn btn-primary" style={{width: '100%'}} onClick={() => { setIsCartOpen(false); setCurrentPage('checkout'); }}>INITIALIZE SECURE CHECKOUT</button>
                   </div>
               </div>
           </div>
@@ -298,6 +317,21 @@ Your development environment is now ready. Good luck, Operator.
                                   <p>Forge your own universe. Access game development engines, coding tutorials, and asset creation guides.</p>
                                   <button className="btn btn-outline mt-4" style={{width: '100%'}}>GO TO GAME FORGE</button>
                               </div>
+                          </div>
+                      </div>
+                  </section>
+
+                  {/* Integrated Admin Hub Section on Home Page */}
+                  <section className="section" id="admin-hub" style={{background: 'rgba(0,0,0,0.4)', borderTop: '1px solid var(--glass-border)'}}>
+                      <div className="container">
+                          <div style={{textAlign: 'center', marginBottom: '4rem'}}>
+                              <h2 className="glitch" data-text="SYSTEM_HUB" style={{fontSize: '3.5rem'}}>SYSTEM_HUB</h2>
+                              <p style={{color: 'var(--accent-cyan)', letterSpacing: '5px'}}>REAL-TIME_DATABASE_MANAGEMENT</p>
+                          </div>
+                          
+                          {/* We embed the dashboard here but without the 'Back' button logic since it's in-page */}
+                          <div className="glass" style={{padding: '0', border: 'none', background: 'transparent'}}>
+                              <AdminDashboard onBack={null} />
                           </div>
                       </div>
                   </section>
@@ -438,6 +472,75 @@ Your development environment is now ready. Good luck, Operator.
                               <p>Watching: NEURAL_CHAMPIONSHIPS_2026</p>
                               <a href="https://twitch.tv" target="_blank" rel="noopener noreferrer" className="btn btn-outline mt-4" style={{display: 'inline-block'}}>TUNE IN</a>
                           </div>
+                      </div>
+                  </div>
+              </div>
+          )}
+
+          {currentPage === 'checkout' && (
+              <div className="page-view checkout-view" style={{paddingTop: '150px', paddingBottom: '100px'}}>
+                  <div className="container" style={{maxWidth: '800px'}}>
+                      <h1 className="page-title">Secure <span style={{color: 'var(--accent-pink)'}}>Checkout</span></h1>
+                      <div className="grid" style={{gridTemplateColumns: '1fr 1fr', gap: '3rem'}}>
+                          <div className="glass p-4">
+                              <h3 style={{color: 'var(--accent-cyan)', marginBottom: '2rem'}}>ORDER SUMMARY</h3>
+                              <div className="checkout-items">
+                                  {cart.map((item, i) => (
+                                      <div key={i} style={{display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem'}}>
+                                          <span>{item.name}</span>
+                                          <span style={{color: 'var(--accent-cyan)'}}>${item.price}</span>
+                                      </div>
+                                  ))}
+                              </div>
+                              <div style={{fontSize: '1.5rem', fontWeight: 900, marginTop: '2rem', display: 'flex', justifyContent: 'space-between'}}>
+                                  <span>TOTAL</span>
+                                  <span style={{color: 'var(--accent-pink)'}}>${cart.reduce((t, item) => t + (item.price || 0), 0)}</span>
+                              </div>
+                          </div>
+                          
+                          <form className="glass p-4" onSubmit={handleCheckoutSubmit}>
+                              <h3 style={{color: 'var(--accent-cyan)', marginBottom: '2rem'}}>BILLING_INFO</h3>
+                              <input 
+                                  type="text" placeholder="FULL_NAME" required 
+                                  style={{width: '100%', padding: '1rem', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--accent-cyan)', color: 'white', marginBottom: '1rem'}}
+                                  value={checkoutData.name} onChange={e => setCheckoutData({...checkoutData, name: e.target.value})}
+                              />
+                              <input 
+                                  type="email" placeholder="EMAIL_ADDRESS" required 
+                                  style={{width: '100%', padding: '1rem', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--accent-cyan)', color: 'white', marginBottom: '1rem'}}
+                                  value={checkoutData.email} onChange={e => setCheckoutData({...checkoutData, email: e.target.value})}
+                              />
+                              <textarea 
+                                  placeholder="SHIPPING_ADDRESS" required 
+                                  style={{width: '100%', padding: '1rem', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--accent-cyan)', color: 'white', marginBottom: '1rem', height: '100px'}}
+                                  value={checkoutData.address} onChange={e => setCheckoutData({...checkoutData, address: e.target.value})}
+                              />
+                              <select 
+                                  style={{width: '100%', padding: '1rem', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--accent-cyan)', color: 'white', marginBottom: '2rem'}}
+                                  value={checkoutData.payment} onChange={e => setCheckoutData({...checkoutData, payment: e.target.value})}
+                              >
+                                  <option value="card">CREDIT_CARD (Neural-Link)</option>
+                                  <option value="upi">UPI_GENESIS</option>
+                                  <option value="cod">CASH_ON_DELIVERY</option>
+                              </select>
+                              <button type="submit" className="btn btn-primary" style={{width: '100%'}}>CONFIRM_ORDER</button>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          )}
+
+          {currentPage === 'success' && (
+              <div className="page-view success-view" style={{paddingTop: '200px', paddingBottom: '200px', textAlign: 'center'}}>
+                  <div className="container" style={{maxWidth: '600px'}}>
+                      <div className="glass p-5 fade-in" style={{border: '2px solid var(--accent-cyan)', boxShadow: '0 0 30px var(--accent-cyan)'}}>
+                          <h1 className="glitch" data-text="ORDER_SECURED" style={{fontSize: '4rem', color: 'var(--accent-cyan)'}}>ORDER_SECURED</h1>
+                          <p style={{fontSize: '1.2rem', margin: '2rem 0', color: 'var(--text-main)'}}>Your neural equipment is being prepared for dispatch.</p>
+                          <div style={{background: 'rgba(0,0,0,0.5)', padding: '1.5rem', borderRadius: '4px', marginBottom: '3rem'}}>
+                              <span style={{color: 'var(--text-dim)'}}>TRACKING_ID:</span>
+                              <span style={{color: 'var(--accent-pink)', marginLeft: '1rem', fontWeight: 900, fontSize: '1.2rem'}}>{orderId}</span>
+                          </div>
+                          <button className="btn btn-outline" onClick={() => setCurrentPage('home')}>RETURN_TO_BASE</button>
                       </div>
                   </div>
               </div>
