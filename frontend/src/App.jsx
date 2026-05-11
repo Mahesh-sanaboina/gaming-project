@@ -4,7 +4,10 @@ import './index.css';
 import AdminDashboard from './components/AdminDashboard';
 import PaymentGateway from './components/PaymentGateway';
 
-axios.defaults.baseURL = 'http://127.0.0.1:5000';
+// API Configuration: Use relative path for Vercel rewrites, fallback to localhost for development
+axios.defaults.baseURL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+    ? 'http://127.0.0.1:5000' 
+    : ''; 
 
 const fallbackProducts = [
     { _id: '1', name: 'Quantum Console X', price: 499, description: 'Next-gen performance in a sleek pearl-white design. Optimized for 4K 120Hz gaming.', category: 'console', imageUrl: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=1000' },
