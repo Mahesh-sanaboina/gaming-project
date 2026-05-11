@@ -30,8 +30,8 @@ const PaymentGateway = ({ amount, onSucess, onCancel }) => {
                 {step === 'selection' && (
                     <div className="fade-in">
                         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                            <h2 style={{ color: 'var(--accent-cyan)', letterSpacing: '4px' }}>SECURE_UPLINK</h2>
-                            <p style={{ color: 'var(--text-dim)', fontSize: '0.9rem' }}>TOTAL_DUE: <span style={{ color: 'var(--accent-pink)' }}>${amount}</span></p>
+                            <h2 style={{ color: 'var(--accent-cyan)', letterSpacing: '4px' }}>SECURE_PAYMENT</h2>
+                            <p style={{ color: 'var(--text-dim)', fontSize: '0.9rem' }}>TOTAL DUE: <span style={{ color: 'var(--accent-pink)' }}>${amount}</span></p>
                         </div>
 
                         <div className="payment-options" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -46,7 +46,7 @@ const PaymentGateway = ({ amount, onSucess, onCancel }) => {
                         </div>
 
                         <div style={{ marginTop: '2rem' }}>
-                            <h4 style={{ marginBottom: '1rem', fontSize: '0.8rem', color: 'var(--text-dim)' }}>TRADITIONAL_CARDS</h4>
+                            <h4 style={{ marginBottom: '1rem', fontSize: '0.8rem', color: 'var(--text-dim)' }}>CREDIT_OR_DEBIT_CARD</h4>
                             <input type="text" placeholder="CARD_NUMBER" className="cyber-input mb-2" style={{width: '100%', marginBottom: '0.5rem'}} />
                             <div style={{ display: 'flex', gap: '1rem' }}>
                                 <input type="text" placeholder="MM/YY" className="cyber-input" style={{flex: 1}} />
@@ -54,19 +54,19 @@ const PaymentGateway = ({ amount, onSucess, onCancel }) => {
                             </div>
                         </div>
 
-                        <button className="btn btn-primary mt-4" style={{ width: '100%' }} onClick={handlePay}>AUTHORIZE_PAYMENT</button>
+                        <button className="btn btn-primary mt-4" style={{ width: '100%' }} onClick={handlePay}>CONFIRM & PAY</button>
                     </div>
                 )}
 
                 {step === 'processing' && (
                     <div className="text-center fade-in">
-                        <div className="glitch" data-text="ENCRYPTING" style={{ fontSize: '2rem' }}>ENCRYPTING</div>
+                        <div className="glitch" data-text="PROCESSING" style={{ fontSize: '2rem' }}>PROCESSING</div>
                         <div className="loader-ring" style={{
                             width: '80px', height: '80px', border: '4px solid transparent',
                             borderTopColor: 'var(--accent-cyan)', borderRadius: '50%',
                             margin: '2rem auto', animation: 'spin 1s linear infinite'
                         }}></div>
-                        <p style={{ color: 'var(--accent-cyan)', fontFamily: 'monospace' }}>STABLISHING_SECURE_TUNNEL...</p>
+                        <p style={{ color: 'var(--accent-cyan)', fontFamily: 'monospace' }}>SECURING_TRANSACTION...</p>
                     </div>
                 )}
 

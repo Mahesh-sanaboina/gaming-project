@@ -9,6 +9,20 @@
     --neon-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
     --glass-border: rgba(0, 242, 255, 0.15);
     --grad-primary: linear-gradient(135deg, #00f2ff, #bc13fe);
+    --font-cyber: 'Inter', sans-serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-main);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--accent-cyan);
+    border-radius: 0;
+    box-shadow: 0 0 10px var(--accent-cyan);
 }
 
 * {
@@ -49,14 +63,17 @@ body {
     border-radius: 50%;
 }
 
-/* Background Scanlines Effect */
+/* Background Scanlines & Grain Effect */
 body::before {
     content: "";
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    background-size: 100% 4px, 3px 100%;
+    background: 
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03)),
+        url('https://grainy-gradients.vercel.app/noise.svg');
+    background-size: 100% 4px, 3px 100%, 200px 200px;
+    opacity: 0.15;
     pointer-events: none;
     z-index: 999;
 }
@@ -211,6 +228,17 @@ body::before {
     margin-bottom: 1rem;
     letter-spacing: 3px;
     color: var(--accent-cyan);
+    position: relative;
+    display: inline-block;
+}
+
+.glass h3::after {
+    content: '';
+    position: absolute;
+    bottom: -5px; left: 0;
+    width: 30px; height: 2px;
+    background: var(--accent-pink);
+    box-shadow: 0 0 10px var(--accent-pink);
 }
 
 /* Buttons */
@@ -233,6 +261,11 @@ body::before {
 .btn-primary:hover {
     background: #fff;
     box-shadow: 0 0 30px #fff;
+    transform: translateY(-2px) scale(1.05);
+}
+
+.btn-primary:active {
+    transform: translateY(0) scale(1);
 }
 
 .btn-outline {
@@ -691,4 +724,15 @@ table tbody tr:hover {
     50% { transform: translate(1px, -1px); }
     75% { transform: translate(-1px, -1px); }
     100% { transform: translate(0); }
+}
+
+/* Modal Glitch Entry */
+.pillar-modal, .gateway-modal {
+    animation: modal-glitch 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes modal-glitch {
+    0% { transform: scale(0.8) skew(10deg); opacity: 0; filter: hue-rotate(90deg); }
+    50% { transform: scale(1.1) skew(-5deg); opacity: 0.8; filter: hue-rotate(-90deg); }
+    100% { transform: scale(1) skew(0); opacity: 1; filter: hue-rotate(0); }
 }

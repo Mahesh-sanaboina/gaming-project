@@ -265,7 +265,7 @@ Your development environment is now ready. Good luck, Operator.
           </ul>
           
           <div className="cart-status" onClick={() => { setIsCartOpen(true); setIsMenuOpen(false); }} style={{fontSize: '1.2rem', fontWeight: 900, color: 'var(--accent-cyan)', cursor: 'pointer'}}>
-              [ STORAGE: {cart.length} ]
+              [ CART: {cart.length} ]
           </div>
       </nav>
 
@@ -274,7 +274,7 @@ Your development environment is now ready. Good luck, Operator.
           <div className="cart-overlay" onClick={() => setIsCartOpen(false)}>
               <div className="cart-panel" onClick={e => e.stopPropagation()}>
                   <div className="cart-header">
-                      <h2 style={{color: 'var(--accent-cyan)', fontSize: '2rem'}}>STORAGE UNIT</h2>
+                      <h2 style={{color: 'var(--accent-cyan)', fontSize: '2rem'}}>YOUR CART</h2>
                       <button className="close-modal" style={{position: 'static'}} onClick={() => setIsCartOpen(false)}>×</button>
                   </div>
                   <div className="cart-items">
@@ -314,10 +314,10 @@ Your development environment is now ready. Good luck, Operator.
                       <button 
                           className="btn btn-primary" 
                           style={{width: '100%'}} 
-                          onClick={handleCheckout}
+                          onClick={handleCheckout} 
                           disabled={cart.length === 0 || checkoutState === 'processing'}
                       >
-                          {checkoutState === 'processing' ? 'ESTABLISHING SECURE UPLINK...' : 'INITIALIZE SECURE CHECKOUT'}
+                          {checkoutState === 'processing' ? 'PROCESSING...' : 'PROCEED TO CHECKOUT'}
                       </button>
                   </div>
               </div>
@@ -450,12 +450,12 @@ Your development environment is now ready. Good luck, Operator.
                         <img src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=2000" alt="Cyber Grid" />
                       </div>
                       <div className="overlay"></div>
-                      <div className="hero-content">
-                          <h1 className="glitch" data-text="EVOLVE">EVOLVE</h1>
-                          <p style={{fontSize: '1.5rem', color: 'var(--accent-cyan)', letterSpacing: '5px', textTransform: 'uppercase', marginBottom: '3rem'}}>Integrated Gaming Ecosystem v4.0</p>
+                      <div className="hero-content fade-in">
+                          <h1 className="glitch" data-text="EVOLVE" style={{fontSize: 'clamp(3rem, 15vw, 8rem)'}}>EVOLVE</h1>
+                          <p style={{fontSize: 'clamp(1rem, 2vw, 1.5rem)', color: 'var(--accent-cyan)', letterSpacing: '8px', textTransform: 'uppercase', marginBottom: '3rem', fontWeight: 300}}>Neural_Integrated_Ecosystem_v4.2</p>
                           <div className="hero-buttons">
-                              <button onClick={() => setCurrentPage('buy')} className="btn btn-primary">ENTER MARKET</button>
-                              <button onClick={() => setCurrentPage('build')} className="btn btn-outline" style={{marginLeft: '20px'}}>ACCESS FORGE</button>
+                              <button onClick={() => setCurrentPage('buy')} className="btn btn-primary">GO TO SHOP</button>
+                              <button onClick={() => setCurrentPage('build')} className="btn btn-outline" style={{marginLeft: '20px'}}>GAME DEV</button>
                           </div>
                       </div>
                   </header>
@@ -469,7 +469,7 @@ Your development environment is now ready. Good luck, Operator.
 
                   <section className="section">
                       <div className="container">
-                          <h2 className="page-title" style={{fontSize: '4rem'}}>Core <span style={{color: 'var(--accent-pink)'}}>Sectors</span></h2>
+                          <h2 className="page-title fade-in" style={{fontSize: 'clamp(2rem, 8vw, 4rem)'}}>Core <span style={{color: 'var(--accent-pink)'}}>Sectors</span></h2>
                           <div className="grid">
                               <div className="glass fade-in" onClick={() => setCurrentPage('buy')}>
                                   <div style={{height: '200px', marginBottom: '2rem', overflow: 'hidden'}}>
@@ -528,7 +528,7 @@ Your development environment is now ready. Good luck, Operator.
                                   <h3>{p.name}</h3>
                                   <div style={{fontSize: '2rem', color: 'var(--accent-cyan)', fontWeight: 900, marginBottom: '1rem'}}>${p.price}</div>
                                   <p style={{marginBottom: '2rem'}}>{p.description}</p>
-                                  <button onClick={() => addToCart(p)} className="btn btn-primary" style={{width: '100%'}}>ACQUIRE UNIT</button>
+                                  <button onClick={() => addToCart(p)} className="btn btn-primary" style={{width: '100%'}}>ADD TO CART</button>
                               </div>
                           ))}
                       </div>

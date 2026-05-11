@@ -86,8 +86,8 @@ const AdminDashboard = ({ onBack }) => {
             <div className="container" style={{ padding: onBack ? '0 4rem' : '0' }}>
                 <div className="admin-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
                     <div>
-                        <h1 className="glitch" data-text="COMMAND_CENTER" style={{ fontSize: onBack ? '3rem' : '2.5rem' }}>COMMAND_CENTER</h1>
-                        <p style={{ color: 'var(--accent-cyan)', letterSpacing: '3px' }}>NEURAL_INTERFACE_v8.2.1</p>
+                        <h1 className="glitch" data-text="ADMIN_DASHBOARD" style={{ fontSize: onBack ? '3rem' : '2.5rem' }}>ADMIN_DASHBOARD</h1>
+                        <p style={{ color: 'var(--accent-cyan)', letterSpacing: '3px' }}>SYSTEM_MANAGEMENT_v8.2.1</p>
                     </div>
                     {onBack && <button className="btn btn-outline" onClick={onBack}>RETURN_TO_STATION</button>}
                 </div>
@@ -121,8 +121,8 @@ const AdminDashboard = ({ onBack }) => {
                     {/* Product Management */}
                     <div className="glass p-4 overflow-hidden">
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                            <h3 style={{ color: 'var(--accent-cyan)' }}>// PRODUCT_INVENTORY</h3>
-                            <button className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }} onClick={() => setIsAddModalOpen(true)}>ADD_NEW_UNIT</button>
+                            <h3 style={{ color: 'var(--accent-cyan)' }}>// INVENTORY_MANAGER</h3>
+                            <button className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.8rem' }} onClick={() => setIsAddModalOpen(true)}>ADD NEW PRODUCT</button>
                         </div>
 
                         {isAddModalOpen && (
@@ -177,7 +177,7 @@ const AdminDashboard = ({ onBack }) => {
                     {/* Activity Log & Subscribers */}
                     <div className="grid" style={{ gridTemplateColumns: '1fr', gap: '2rem' }}>
                         <div className="glass p-4" style={{ background: 'rgba(0,0,0,0.8)', border: '1px solid var(--accent-cyan)' }}>
-                            <h3 style={{ color: 'var(--accent-cyan)', marginBottom: '1.5rem', fontSize: '1rem' }}>NEURAL_ACTIVITY_LOG</h3>
+                            <h3 style={{ color: 'var(--accent-cyan)', marginBottom: '1.5rem', fontSize: '1rem' }}>SYSTEM_ACTIVITY_LOGS</h3>
                             <div className="log-container" style={{ height: '250px', overflowY: 'auto', fontFamily: 'monospace', fontSize: '0.8rem' }}>
                                 {logs.map(log => (
                                     <div key={log.id} style={{ marginBottom: '0.5rem', color: log.msg.includes('ERROR') ? 'var(--accent-pink)' : '#aaa' }}>
