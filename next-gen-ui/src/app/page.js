@@ -25,7 +25,7 @@ import Hero from "@/components/Hero";
 import GameCard from "@/components/GameCard";
 import EsportsSection from "@/components/EsportsSection";
 import AdminDashboard from "@/components/AdminDashboard";
-import PaymentGateway from "@/components/PaymentGateway";
+// import PaymentGateway from "@/components/PaymentGateway"; // Disabled - Razorpay removed
 import PaymentHistory from "@/components/PaymentHistory";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
@@ -453,15 +453,15 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Payment Gateway Modal */}
-      {isGatewayOpen && (
+      {/* Payment Gateway Modal - Disabled */}
+      {/* {isGatewayOpen && (
         <PaymentGateway 
           onCancel={() => setIsGatewayOpen(false)} 
           onSuccess={executeOrderSync} 
           amount={cart.reduce((t, i) => t + (i.price || 0), 0)}
           products={cart}
         />
-      )}
+      )} */}
 
       {/* Admin Dashboard Overlay */}
       {isAdmin && <AdminDashboard onBack={() => setIsAdmin(false)} />}
