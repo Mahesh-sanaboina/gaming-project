@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-require('dotenv').config();
 const Product = require('./models/Product');
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/gamingdb';
+const MONGO_URI = 'mongodb://127.0.0.1:27017/gamingdb';
 
 const products = [
     { name: 'Quantum Console X', price: 499, description: 'Next-gen performance in a sleek pearl-white design. Optimized for 4K 120Hz gaming.', category: 'console', imageUrl: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=1000' },

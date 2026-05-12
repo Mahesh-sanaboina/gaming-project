@@ -27,7 +27,7 @@ import EsportsSection from "@/components/EsportsSection";
 import AdminDashboard from "@/components/AdminDashboard";
 import PaymentHistory from "@/components/PaymentHistory";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
+const API_BASE_URL = "";
 axios.defaults.baseURL = API_BASE_URL;
 
 export default function Home() {
