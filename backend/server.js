@@ -26,16 +26,12 @@ async function seedData() {
   const productCount = await Product.countDocuments();
   if (productCount === 0) {
     const products = [
-      { name: 'Quantum Console X', price: 499, description: 'Next-gen performance in a sleek pearl-white design. Optimized for 4K 120Hz gaming.', category: 'console', imageUrl: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=1000' },
-      { name: 'Aurora Rig Ultra', price: 2499, description: 'Premium water-cooled PC with RTX 5090 and elegant white aesthetics.', category: 'pc', imageUrl: 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?auto=format&fit=crop&q=80&w=1000' },
-      { name: 'Zenith Pro Headset', price: 299, description: 'Audiophile-grade wireless headset with pristine sound and cloud-soft comfort.', category: 'accessory', imageUrl: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&q=80&w=1000' },
-      { name: 'Cyber-Mechanical Keyboard', price: 189, description: 'Ultra-responsive optical switches with per-key RGB and titanium frame.', category: 'accessory', imageUrl: 'https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&q=80&w=1000' },
-      { name: 'Nexus Gaming Monitor', price: 899, description: '32-inch 4K OLED display with 240Hz refresh rate and ultra-low response time.', category: 'accessory', imageUrl: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&q=80&w=1000' },
-      { name: 'Titan Gaming Chair', price: 549, description: 'Ergonomic carbon-fiber design with magnetic memory foam lumbar support.', category: 'accessory', imageUrl: 'https://images.unsplash.com/photo-1598550476439-6847785fce66?auto=format&fit=crop&q=80&w=1000' },
-      { name: 'Phantom Pro Mouse', price: 149, description: 'Ultra-lightweight wireless esports mouse with an optical sensor and 8000Hz polling rate.', category: 'accessory', imageUrl: 'https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=1000' },
-      { name: 'GlideX Glass Mousepad', price: 99, description: 'Tempered glass surface for frictionless, pixel-perfect tracking and durability.', category: 'accessory', imageUrl: 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&q=80&w=1000' },
-      { name: 'Aura Studio Mic', price: 199, description: 'Professional XLR/USB microphone with active noise cancellation and RGB shock mount.', category: 'accessory', imageUrl: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&q=80&w=1000' },
-      { name: 'Vortex VR Lens', price: 799, description: 'Next-generation untethered virtual reality with 8K per eye resolution and haptic feedback.', category: 'console', imageUrl: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&q=80&w=1000' }
+      { name: 'Starter Pack', price: 9, description: 'Basic entry into the Nexus ecosystem. Essential neural assets included.', category: 'starter', imageUrl: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=1000' },
+      { name: 'Basic Membership', price: 29, description: 'Standard access with weekly tactical drops and community badge.', category: 'membership', imageUrl: 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?auto=format&fit=crop&q=80&w=1000' },
+      { name: 'Premium Pass', price: 49, description: 'Enhanced performance boosts and exclusive cosmetic skins.', category: 'membership', imageUrl: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&q=80&w=1000' },
+      { name: 'Pro Gamer Pass', price: 99, description: 'Zero-latency neural link and priority esports queue access.', category: 'membership', imageUrl: 'https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&q=80&w=1000' },
+      { name: 'VIP Access Unit', price: 199, description: 'Full network dominance with all current and future asset drops.', category: 'vip', imageUrl: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&q=80&w=1000' },
+      { name: 'Neural Boost (7D)', price: 19, description: '7-day neural performance enhancement protocol.', category: 'boost', imageUrl: 'https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=1000' }
     ];
     await Product.insertMany(products);
     console.log('Seeded database with premium products.');
