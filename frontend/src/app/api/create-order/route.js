@@ -1,20 +1,32 @@
 import { NextResponse } from 'next/server';
+import connectDB from '@/lib/db';
+import Payment from '@/models/Payment';
 
-// Dummy order creation endpoint - Razorpay disabled
 export async function POST(req) {
   try {
-    const { amount, currency = "INR" } = await req.json();
+    const { userName, email, amount, currency = "INR", products } = await req.json();
+    
+    await connectDB();
+    
+    // Create payment record
+    const transactionId = `txn_${Date.now()}`;
+    const payment = await Payment.create({
+      userName,
+      email,
+      transactionId,
+      amount,
+      currency,
+      products: products || [],
+      status: 'pending'
+    });
 
-    // Return mock order response
-    const mockOrder = {
-      id: `order_${Date.now()}`,
+    return NextResponse.json({
+      id: payment._id,
+      transactionId,
       amount: Math.round(amount * 100),
       currency,
-      receipt: `receipt_${Date.now()}`,
-      status: 'created'
-    };
-
-    return NextResponse.json(mockOrder, { status: 200 });
+      status: 'pending'
+    }, { status: 200 });
   } catch (error) {
     console.error("Order Error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

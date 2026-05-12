@@ -1,28 +1,39 @@
 import { NextResponse } from 'next/server';
+import connectDB from '@/lib/db';
+import Payment from '@/models/Payment';
 
-// Dummy payment verification endpoint - Razorpay disabled
 export async function POST(req) {
   try {
     const { 
-      razorpay_order_id, 
-      razorpay_payment_id,
+      transactionId,
       userName,
       email,
       amount,
       products
     } = await req.json();
 
-    // Return mock success response
+    await connectDB();
+
+    // Update payment status to success
+    const payment = await Payment.findOneAndUpdate(
+      { transactionId },
+      { status: 'success' },
+      { new: true }
+    );
+
+    if (!payment) {
+      return NextResponse.json({ error: "Payment not found" }, { status: 404 });
+    }
+
     return NextResponse.json({ 
       message: "Payment Verified", 
       payment: {
-        razorpayOrderId: razorpay_order_id,
-        razorpayPaymentId: razorpay_payment_id,
-        userName: userName || "Elite Operator",
-        email: email || "operator@aether-core.com",
-        amount: amount,
+        transactionId: payment.transactionId,
+        userName: payment.userName,
+        email: payment.email,
+        amount: payment.amount,
         status: 'success',
-        products: products || []
+        products: payment.products
       }
     }, { status: 200 });
   } catch (error) {

@@ -4,8 +4,6 @@ const PaymentSchema = new mongoose.Schema({
   userId: { type: String, required: false },
   userName: { type: String, required: true },
   email: { type: String, required: true },
-  razorpayOrderId: { type: String, required: true },
-  razorpayPaymentId: { type: String, required: true },
   transactionId: { type: String, required: true, unique: true },
   amount: { type: Number, required: true },
   currency: { type: String, default: 'INR' },

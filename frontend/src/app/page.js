@@ -25,7 +25,6 @@ import Hero from "@/components/Hero";
 import GameCard from "@/components/GameCard";
 import EsportsSection from "@/components/EsportsSection";
 import AdminDashboard from "@/components/AdminDashboard";
-// import PaymentGateway from "@/components/PaymentGateway"; // Disabled - Razorpay removed
 import PaymentHistory from "@/components/PaymentHistory";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
