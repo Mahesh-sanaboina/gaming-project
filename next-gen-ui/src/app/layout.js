@@ -1,6 +1,8 @@
 import { Orbitron, Poppins, Exo_2 } from "next/font/google";
 import "./globals.css";
 
+export const unstable_instant = { prefetch: 'static' }
+
 const orbitron = Orbitron({
   variable: "--font-orbitron",
   subsets: ["latin"],
