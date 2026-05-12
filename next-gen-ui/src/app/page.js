@@ -95,6 +95,7 @@ export default function Home() {
         if (res.data && res.data.length > 0) setProducts(res.data);
       } catch (err) {
         console.error('Error fetching products:', err);
+        
       }
     };
     fetchProducts();
