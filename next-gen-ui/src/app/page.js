@@ -28,7 +28,7 @@ import AdminDashboard from "@/components/AdminDashboard";
 import PaymentGateway from "@/components/PaymentGateway";
 import PaymentHistory from "@/components/PaymentHistory";
 
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 axios.defaults.baseURL = API_BASE_URL;
 
 export default function Home() {
@@ -114,6 +114,15 @@ export default function Home() {
     setCart([]);
     setIsGatewayOpen(false);
   };
+
+  if (products.length === 0 && currentPage === 'home') {
+    return (
+      <div className="min-h-screen bg-[#0B1120] flex flex-col items-center justify-center font-orbitron">
+        <div className="w-16 h-16 border-4 border-accent-blue/10 border-t-accent-blue rounded-full animate-spin mb-8" />
+        <p className="text-accent-blue text-xs tracking-[0.5em] animate-pulse uppercase">INITIALIZING_AETHER_CORE_GRID...</p>
+      </div>
+    );
+  }
 
   return (
     <main className="relative min-h-screen bg-[#0B1120] text-[#F9FAFB] font-poppins selection:bg-accent-blue/30 overflow-x-hidden">
