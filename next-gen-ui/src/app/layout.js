@@ -18,8 +18,8 @@ const exo2 = Exo_2({
 });
 
 export const metadata = {
-  title: "GamingX | Next-Gen AAA Platform",
-  description: "Experience the future of gaming with our high-fidelity, cyberpunk-inspired esports portal.",
+  title: "AETHER_CORE | Next-Gen Neural Platform",
+  description: "The global benchmark for high-fidelity neural ecosystems.",
 };
 
 export default function RootLayout({ children }) {

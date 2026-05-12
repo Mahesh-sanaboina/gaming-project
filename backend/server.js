@@ -40,12 +40,12 @@ async function seedData() {
   const timelineCount = await TimelineEvent.countDocuments();
   if (timelineCount === 0) {
     const events = [
-      { order: 0, title: 'The Spark', date: 'Jan 2024', description: 'Initial concept of GamingX was born in a small neon-lit garage.', type: 'start', imageUrl: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=800' },
-      { order: 1, title: 'Alpha Testing', date: 'March 2024', description: 'The first Quantum Console prototype successfully ran its first game.', type: 'milestone', imageUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=800' },
-      { order: 2, title: 'Global Partnership', date: 'June 2024', description: 'Joined forces with major esports leagues to optimize performance.', type: 'milestone', imageUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=800' },
-      { order: 3, title: 'The Beta Phase', date: 'Sept 2024', description: 'Released Aurora Rig to 500 lucky beta testers worldwide.', type: 'phase', imageUrl: 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?auto=format&fit=crop&q=80&w=800' },
-      { order: 4, title: 'Mainstream Launch', date: 'Dec 2024', description: 'Official global launch of the GamingX ecosystem.', type: 'launch', imageUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=800' },
-      { order: 5, title: 'The Result: GamingX v1.0', date: 'Present', description: 'Where we are today. A revolution in interactive entertainment.', type: 'result', imageUrl: 'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&q=80&w=800' }
+      { order: 0, title: 'The Spark', date: 'Jan 2024', description: 'Initial concept of AETHER_CORE was born in a small neon-lit garage.', type: 'start', imageUrl: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=800' },
+      { order: 1, title: 'Alpha Testing', date: 'March 2024', description: 'The first prototype successfully ran its first neural simulation.', type: 'milestone', imageUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=800' },
+      { order: 2, title: 'Global Partnership', date: 'June 2024', description: 'Joined forces with major esports leagues to optimize network latency.', type: 'milestone', imageUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=800' },
+      { order: 3, title: 'The Beta Phase', date: 'Sept 2024', description: 'Released Aether Rig to 500 lucky beta testers worldwide.', type: 'phase', imageUrl: 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?auto=format&fit=crop&q=80&w=800' },
+      { order: 4, title: 'Mainstream Launch', date: 'Dec 2024', description: 'Official global launch of the AETHER_CORE ecosystem.', type: 'launch', imageUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=800' },
+      { order: 5, title: 'The Result: AETHER_CORE v1.0', date: 'Present', description: 'Where we are today. A revolution in interactive neural entertainment.', type: 'result', imageUrl: 'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&q=80&w=800' }
     ];
     await TimelineEvent.insertMany(events);
     console.log('Seeded database with timeline events.');
@@ -55,7 +55,7 @@ mongoose.connection.once('open', seedData);
 
 // API Routes
 app.get('/', (req, res) => {
-  res.send('GamingX API is running successfully!');
+  res.send('AETHER_CORE API is running successfully!');
 });
 app.get('/api/products', async (req, res) => {
   try {

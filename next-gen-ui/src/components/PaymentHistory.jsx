@@ -31,7 +31,7 @@ const PaymentHistory = () => {
         doc.rect(0, 0, 210, 40, 'F');
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(24);
-        doc.text("GAMINGX NEXUS", 20, 25);
+        doc.text("AETHER_CORE", 20, 25);
         
         doc.setTextColor(0, 0, 0);
         doc.setFontSize(12);
@@ -52,7 +52,7 @@ const PaymentHistory = () => {
         doc.line(20, y, 190, y);
         doc.setFontSize(16);
         doc.text(`Total Amount Paid: ₹${details.amount}`, 20, y + 20);
-        doc.save(`GamingX_Invoice_${details.transactionId}.pdf`);
+        doc.save(`AetherCore_Invoice_${details.transactionId}.pdf`);
     };
 
     const filteredPayments = payments.filter(p => 

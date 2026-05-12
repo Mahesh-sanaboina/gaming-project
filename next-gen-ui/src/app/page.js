@@ -82,7 +82,7 @@ export default function Home() {
 `;
     const file = new Blob([fileContent], {type: 'text/plain'});
     element.href = URL.createObjectURL(file);
-    element.download = "GamingX_GameDev_Guide.txt";
+    element.download = "AetherCore_Neural_Guide.txt";
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
@@ -490,7 +490,7 @@ export default function Home() {
                   { Icon: X, href: "https://twitter.com" },
                   { Icon: Radio, href: "https://twitch.tv" },
                   { Icon: MessageSquare, href: "https://discord.com" },
-                  { Icon: Mail, href: "mailto:support@gamingx.com" }
+                  { Icon: Mail, href: "mailto:support@aether-core.com" }
                 ].map((social, i) => (
                   <a 
                     key={i} 

@@ -28,8 +28,8 @@ export async function POST(req) {
       await connectDB();
       
       const newPayment = new Payment({
-        userName: userName || "Operator",
-        email: email || "operator@gamingx.com",
+        userName: userName || "Elite Operator",
+        email: email || "operator@aether-core.com",
         razorpayOrderId: razorpay_order_id,
         razorpayPaymentId: razorpay_payment_id,
         transactionId: razorpay_payment_id, // Use payment ID as transaction ID

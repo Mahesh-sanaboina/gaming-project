@@ -48,7 +48,7 @@ const PaymentGateway = ({ amount, products, onSuccess, onCancel }) => {
         doc.setFontSize(10);
         doc.text(`Razorpay ID: ${details.razorpayPaymentId}`, 20, y + 40);
         
-        doc.save(`GamingX_Invoice_${details.transactionId}.pdf`);
+        doc.save(`AetherCore_Invoice_${details.transactionId}.pdf`);
     };
 
     useEffect(() => {
@@ -100,8 +100,8 @@ const PaymentGateway = ({ amount, products, onSuccess, onCancel }) => {
                     }
                 },
                 prefill: {
-                    name: "Operator",
-                    email: "operator@gamingx.com",
+                    name: "Elite Operator",
+                    email: "operator@aether-core.com",
                     contact: "9999999999",
                 },
                 theme: {
